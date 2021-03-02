@@ -38,7 +38,6 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     });
 
     res.status(201).json({
-      token,
       user: {
         id: user._id,
         username: user.username,
@@ -69,7 +68,6 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({
-      token,
       user: {
         id: user._id,
         username: user.username,
