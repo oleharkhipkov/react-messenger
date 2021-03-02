@@ -79,3 +79,32 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     throw new Error('Invalid email or password');
   }
 });
+
+// @route GET /auth/user
+// @desc Get user data with valid token
+// @access Private
+exports.loadUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Not authorized');
+  }
+
+  res.status(200).json({
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
+});
+
+// @route GET /auth/logout
+// @desc Logout user
+// @access Public
+exports.logoutUser = asyncHandler(async (req, res, next) => {
+  res.cookie('token', '');
+
+  res.send('You have successfully logged out');
+});
