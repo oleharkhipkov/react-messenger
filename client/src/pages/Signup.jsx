@@ -120,9 +120,16 @@ const useStyles = makeStyles((theme) => ({
 
 function useRegister() {
   const login = async (username, email, password) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     try {
       const { data } = await axios.post(
-        `/auth/register?username=${username}&email=${email}&password=${password}`
+        '/auth/register',
+        JSON.stringify({ username, email, password }),
+        config
       );
 
       return data;

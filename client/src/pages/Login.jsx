@@ -122,9 +122,17 @@ const useStyles = makeStyles((theme) => ({
 
 function useLogin() {
   const login = async (email, password) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
     try {
       const { data } = await axios.post(
-        `/auth/login?email=${email}&password=${password}`
+        '/auth/login',
+        JSON.stringify({ email, password }),
+        config
       );
 
       return data;
