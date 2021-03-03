@@ -1,27 +1,32 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { UserContext } from '../UserContext';
+import axios from 'axios';
 
 export default function Dashboard() {
+  const { user, setUser } = useContext(UserContext);
   const history = useHistory();
 
-  React.useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) history.push("/signup");
-  }, []);
+  useEffect(() => {
+    if (!user) history.push('/signup');
+  }, [user, history]);
+
+  // add this route to the backend
+  const logout = async () => {
+    return axios.get('/logout');
+  };
 
   return (
     <>
-      {/* For testing purposes right now, ignore styling */}
+      {/* This will be Main Chat page */}
       <p>Dashboard</p>
-      <p>User: {JSON.stringify(localStorage.getItem("user"))}</p>
+      <p>User: {JSON.stringify(user, null, 2)}</p>
       <button
         onClick={() => {
-          localStorage.removeItem("user");
-          history.push("/login");
+          logout().then(() => {
+            setUser(null);
+            history.push('/login');
+          });
         }}
       >
         Logout
