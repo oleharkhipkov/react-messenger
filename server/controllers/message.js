@@ -41,6 +41,7 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
 
   await Conversation.findByIdAndUpdate(req.body.conversationId, {
     mostRecentMessage: message,
+    $push: { messages: message },
   });
 
   res.status(201).json(message);
