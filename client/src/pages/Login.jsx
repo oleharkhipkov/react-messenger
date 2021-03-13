@@ -155,7 +155,7 @@ export default function Login() {
   const history = useHistory();
 
   useEffect(() => {
-    if (user) history.push('/dashboard');
+    if (user) history.push('/home');
   }, [history, user]);
 
   const handleClose = (event, reason) => {
@@ -223,7 +223,7 @@ export default function Login() {
                   (data) => {
                     setSubmitting(false);
                     setUser(data.user);
-                    history.push('/dashboard');
+                    history.push('/home');
                   },
                   (err) => {
                     setSubmitting(false);

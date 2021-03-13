@@ -4,7 +4,7 @@ import { theme } from './themes/theme.js';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import { UserContext } from './UserContext';
 import axios from 'axios';
 
@@ -29,7 +29,7 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/home" component={Home} />
         </UserContext.Provider>
         <Route exact path="/">
           <Redirect to="/signup" />

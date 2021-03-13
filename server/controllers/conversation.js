@@ -21,9 +21,9 @@ exports.getConversations = asyncHandler(async (req, res, next) => {
 // @desc Get single conversation
 // @access Private
 exports.getConversation = asyncHandler(async (req, res, next) => {
-  const conversation = await Conversation.findById(req.params.id).populate(
-    'users messages mostRecentMessage'
-  );
+  const conversation = await Conversation.findById(req.params.id)
+    .populate('users mostRecentMessage')
+    .populate({ path: 'messages', populate: { path: 'sender' } });
 
   if (!conversation) {
     res.status(404);
@@ -37,6 +37,7 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
 // @desc Create new conversation
 // @access Private
 exports.createConversation = asyncHandler(async (req, res, next) => {
+  console.log('create convo', req.body);
   if (!req.body.user) {
     res.status(400);
     throw new Error('User needed to create conversation');

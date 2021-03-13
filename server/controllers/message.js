@@ -26,6 +26,7 @@ exports.getMessages = asyncHandler(async (req, res, next) => {
 // @desc Send a new message
 // @access Private
 exports.sendMessage = asyncHandler(async (req, res, next) => {
+  console.log('convoId', req.body.conversationId);
   const newMessage = {
     conversation: req.body.conversationId,
     sender: req.user.id,
