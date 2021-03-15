@@ -36,7 +36,7 @@ export default function Home() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
   const [userList, setUserList] = useState([]);
@@ -67,7 +67,6 @@ export default function Home() {
           <Sidebar
             userList={userList}
             setUserList={setUserList}
-            currentUser={user}
             conversations={conversations}
             setConversation={setConversation}
             conversation={conversation}

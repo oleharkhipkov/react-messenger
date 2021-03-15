@@ -46,7 +46,6 @@ const Sidebar = ({
   userList,
   setUserList,
   conversations,
-  currentUser,
   setConversation,
   conversation,
   setConvoLoading,
@@ -59,10 +58,10 @@ const Sidebar = ({
   const loggedInUser = () => (
     <Box display="flex" alignItems="center">
       <div className={classes.userImg}>
-        <p>{currentUser.username.substring(0, 2).toUpperCase()}</p>
+        <p>{user.username.substring(0, 2).toUpperCase()}</p>
       </div>
       <Box>
-        <p>{currentUser.username}</p>
+        <p>{user.username}</p>
       </Box>
     </Box>
   );
@@ -94,7 +93,7 @@ const Sidebar = ({
     <div className={classes.sidebarContainer}>
       <div style={{ position: 'relative' }}>
         <SidebarHeader
-          currentUser={currentUser}
+          currentUser={user}
           loggedInUser={loggedInUser}
           handleClick={handleClick}
           anchorEl={anchorEl}
@@ -108,13 +107,13 @@ const Sidebar = ({
           conversations={conversations}
           setConversation={setConversation}
           getConversation={getConversation}
-          user={currentUser}
+          user={user}
         />
       </div>
       <ConvoUserList
         conversations={conversations}
         conversation={conversation}
-        user={currentUser}
+        user={user}
         setConversation={setConversation}
         setConvoLoading={setConvoLoading}
         getConversation={getConversation}
