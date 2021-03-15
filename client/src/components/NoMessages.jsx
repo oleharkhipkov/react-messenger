@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   noMessagesHeading: {
-    fontSize: '20px',
+    fontSize: '22px',
   },
 }));
 
@@ -22,7 +22,10 @@ const NoMessages = () => {
       <p className={classes.noMessagesHeading}>
         You don't have a message selected
       </p>
-      <p>Choose one from you existing messages, or start a new one</p>
+      <p>
+        Choose one from you existing messages, or search for users and start a
+        new one
+      </p>
     </div>
   );
 };

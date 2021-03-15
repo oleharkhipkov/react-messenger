@@ -7,13 +7,11 @@ import Signup from './pages/Signup';
 import Home from './pages/Home';
 import { UserContext } from './UserContext';
 import axios from 'axios';
-
 import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
 
-  // add this route to backend
   useEffect(() => {
     async function loadUser() {
       const { data } = await axios.get('/auth/user');

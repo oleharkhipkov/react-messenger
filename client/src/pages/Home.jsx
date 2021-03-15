@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../components/Sidebar';
 import Chat from '../components/Chat';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const { user, setUser } = useContext(UserContext);
   const history = useHistory();
+
+  const { user, setUser } = useContext(UserContext);
+
   const [conversations, setConversations] = useState([]);
   const [userList, setUserList] = useState([]);
   const [conversation, setConversation] = useState({});
@@ -54,7 +57,7 @@ export default function Home() {
   }, [conversation]);
 
   if (!conversations) {
-    return <p>Loading...</p>;
+    return <CircularProgress />;
   }
 
   return (

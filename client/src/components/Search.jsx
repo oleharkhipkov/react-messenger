@@ -15,12 +15,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchInput: {
-    height: '50px',
+    minHeight: '50px',
     borderRadius: '8px',
     backgroundColor: '#e9eef9',
     display: 'flex',
     paddingLeft: '20px',
     alignItems: 'center',
+    position: 'relative',
   },
   searchIcon: {
     color: '#b1c3df',
@@ -42,8 +43,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     background: '#fff',
     boxShadow: '-1px 0px 6px 0 rgba(0, 0, 0, 0.1)',
-    left: '0',
-    right: '0',
     '&:hover': { backgroundColor: '#F8F8F8' },
   },
   searchResultItemText: {
@@ -69,7 +68,8 @@ export default function Search({
       setUserList([]);
       setWasSearched(false);
     }
-  }, [searchString, setUserList]);
+    // eslint-disable-next-line
+  }, [searchString]);
 
   const search = async () => {
     const config = {
@@ -109,12 +109,14 @@ export default function Search({
     getConversation(data._id);
   };
 
-  const convoExists = (userId) => {
+  const attemptConvoStart = (userId) => {
     let match = false;
     for (let convo of conversations) {
-      if (
-        convo.users.filter((u) => u._id === userId || u._id === user._id)[0]
-      ) {
+      const convoExists = convo.users.filter(
+        (u) => u._id === userId || u._id === user._id
+      )[0];
+
+      if (convoExists) {
         match = true;
         getConversation(convo._id);
         break;
@@ -127,16 +129,12 @@ export default function Search({
     setWasSearched(false);
   };
 
-  const startConvo = (userId) => {
-    convoExists(userId);
-  };
-
   const searchResults = () =>
     userList.map((u) => (
       <div
         className={classes.searchResultItem}
         key={u._id}
-        onClick={() => startConvo(u._id)}
+        onClick={() => attemptConvoStart(u._id)}
       >
         <Avatar>{u.username.substring(0, 2)}</Avatar>
         <div className={classes.searchResultItemText}>{u.username}</div>

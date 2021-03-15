@@ -5,12 +5,12 @@ import Conversation from './Conversation';
 import { makeStyles } from '@material-ui/core/styles';
 import NoMessages from './NoMessages';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   activeChat: {
-    height: '95vh',
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
+    height: '95vh',
+    position: 'relative',
   },
 }));
 

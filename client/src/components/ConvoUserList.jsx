@@ -7,6 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   convoUserList: {
     marginTop: '1rem',
+    height: '100%',
+    overflowY: 'auto',
   },
   conversation: {
     display: 'flex',
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 const ConvoUserList = ({ conversations, user, getConversation }) => {
   const classes = useStyles();
 
-  const StyledBadge = withStyles((theme) => ({
+  const StyledBadge = withStyles(() => ({
     badge: {
       backgroundColor: '#1CED84',
       color: '#1CED84',

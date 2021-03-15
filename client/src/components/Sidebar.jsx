@@ -3,19 +3,15 @@ import { UserContext } from '../UserContext';
 import { useHistory } from 'react-router-dom';
 import Search from './Search';
 import ConvoUserList from './ConvoUserList';
+import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Please from 'pleasejs';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 const useStyles = makeStyles((theme) => ({
   sidebarContainer: {
     padding: '0px 1rem',
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     height: '95vh',
@@ -40,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headingText: {
+    fontSize: '20px',
+    letterSpacing: '-0.29px',
+  },
 }));
 
 const Sidebar = ({
@@ -53,8 +53,8 @@ const Sidebar = ({
 }) => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
-  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
+  const history = useHistory();
 
   const loggedInUser = () => (
     <Box display="flex" alignItems="center">
@@ -79,13 +79,9 @@ const Sidebar = ({
     setConversation(data);
   };
 
-  const handleClick = (e) => {
-    setAnchorEl(e.target);
-  };
+  const handleClick = (e) => setAnchorEl(e.target);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   const logout = async () => {
     await axios.get('/auth/logout');
@@ -96,31 +92,16 @@ const Sidebar = ({
 
   return (
     <div className={classes.sidebarContainer}>
-      <div>
-        <div className={classes.sidebarHeader}>
-          <div style={{ fontSize: '20px' }}>
-            {currentUser && loggedInUser()}
-          </div>
-          <IconButton
-            aria-controls="customized-menu"
-            aria-haspopup="true"
-            edge="end"
-            onClick={handleClick}
-          >
-            <MoreHorizIcon style={{ color: '#95A7C4' }} />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            {' '}
-            <MenuItem onClick={() => logout()}>Logout</MenuItem>
-          </Menu>
-        </div>
-        <h1 style={{ fontSize: '20px', letterSpacing: '-0.29px' }}>Chats</h1>
+      <div style={{ position: 'relative' }}>
+        <SidebarHeader
+          currentUser={currentUser}
+          loggedInUser={loggedInUser}
+          handleClick={handleClick}
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          logout={logout}
+        />
+        <h1 className={classes.headingText}>Chats</h1>
         <Search
           userList={userList}
           setUserList={setUserList}
@@ -130,16 +111,14 @@ const Sidebar = ({
           user={currentUser}
         />
       </div>
-      <div style={{ height: '100%', overflowY: 'auto' }}>
-        <ConvoUserList
-          conversations={conversations}
-          conversation={conversation}
-          user={currentUser}
-          setConversation={setConversation}
-          setConvoLoading={setConvoLoading}
-          getConversation={getConversation}
-        />
-      </div>
+      <ConvoUserList
+        conversations={conversations}
+        conversation={conversation}
+        user={currentUser}
+        setConversation={setConversation}
+        setConvoLoading={setConvoLoading}
+        getConversation={getConversation}
+      />
     </div>
   );
 };
