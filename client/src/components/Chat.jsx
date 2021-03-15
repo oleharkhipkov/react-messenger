@@ -7,8 +7,10 @@ import NoMessages from './NoMessages';
 
 const useStyles = makeStyles((theme) => ({
   activeChat: {
-    height: '100%',
+    height: '95vh',
     position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 

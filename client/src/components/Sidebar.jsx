@@ -13,10 +13,20 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 const useStyles = makeStyles((theme) => ({
+  sidebarContainer: {
+    padding: '0px 1rem',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '95vh',
+    [theme.breakpoints.down('xs')]: {
+      padding: '0px',
+    },
+  },
   sidebarHeader: {
     display: 'flex',
     justifyContent: 'space-between',
-    height: '70px',
+    minHeight: '70px',
     padding: '0px 20px 0px 10px',
     alignItems: 'center',
   },
@@ -85,8 +95,8 @@ const Sidebar = ({
   };
 
   return (
-    <div style={{ padding: '0px 1rem' }}>
-      <div style={{ position: 'relative' }}>
+    <div className={classes.sidebarContainer}>
+      <div>
         <div className={classes.sidebarHeader}>
           <div style={{ fontSize: '20px' }}>
             {currentUser && loggedInUser()}
@@ -120,7 +130,7 @@ const Sidebar = ({
           user={currentUser}
         />
       </div>
-      <div style={{ height: '70vh', overflowY: 'auto' }}>
+      <div style={{ height: '100%', overflowY: 'auto' }}>
         <ConvoUserList
           conversations={conversations}
           conversation={conversation}

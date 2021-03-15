@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme) => ({
   chat: {
     display: 'flex',
     flexDirection: 'column',
-    // width: '100%',
-    height: '470px',
+    height: '100%',
     overflow: 'auto',
-    padding: '0 3rem',
-    paddingTop: '2rem',
-    paddingBottom: '2rem',
+    padding: '2rem 3rem',
+    [theme.breakpoints.down('xs')]: {
+      padding: '1rem 1rem',
+    },
   },
   messageBubbleLeft: {
     padding: '10px',

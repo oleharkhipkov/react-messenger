@@ -5,14 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   form: {
-    position: 'absolute',
-    bottom: '0px',
-    right: '0px',
-    left: '0px',
     padding: '0 3rem',
     marginBottom: '3.5rem',
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: '2rem',
+      padding: '0rem',
+    },
   },
   recordIcon: { marginRight: '12px' },
   messageInput: {

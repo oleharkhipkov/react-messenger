@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: `'Open Sans', 'sans-serif'`,
   },
+  rightGridItem: {
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '12px',
+    },
+  },
 }));
 
 export default function Home() {
@@ -55,7 +60,7 @@ export default function Home() {
   return (
     <Container className={classes.root}>
       <Grid container direction="row">
-        <Grid item sm={4}>
+        <Grid item xs={12} sm={4}>
           <Sidebar
             userList={userList}
             setUserList={setUserList}
@@ -66,7 +71,7 @@ export default function Home() {
             setConvoLoading={setConvoLoading}
           />
         </Grid>
-        <Grid item sm={8}>
+        <Grid item xs={12} sm={8} className={classes.rightGridItem}>
           <Chat
             conversation={conversation}
             setConversation={setConversation}

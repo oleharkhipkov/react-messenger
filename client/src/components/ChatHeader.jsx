@@ -7,8 +7,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 const useStyles = makeStyles((theme) => ({
   chatHeader: {
     backgroundColor: '#fff',
-    // width: '100%',
-    height: '70px',
+    minHeight: '70px',
     boxShadow: '0 2px 20px 0 rgba(88,133,196,0.10)',
     display: 'flex',
     justifyContent: 'space-between',
