@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
+import Avatar from '@material-ui/core/Avatar';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,13 +29,25 @@ const useStyles = makeStyles((theme) => ({
   searchResultsContainer: {
     position: 'absolute',
     zIndex: '2',
+    width: '100%',
   },
   searchResultItem: {
-    border: '1px solid black',
-    backgroundColor: '#fff',
-    padding: '1rem',
-    width: '150px',
-    '&:hover': { backgroundColor: 'lightGray' },
+    display: 'flex',
+    alignItems: 'center',
+    borderBottom: '1px solid #d6d6d6',
+    borderLeft: '1px solid #d6d6d6',
+    borderRight: '1px solid #d6d6d6',
+    padding: '14px',
+    paddingLeft: '10px',
+    fontWeight: 'bold',
+    background: '#fff',
+    boxShadow: '-1px 0px 6px 0 rgba(0, 0, 0, 0.1)',
+    left: '0',
+    right: '0',
+    '&:hover': { backgroundColor: '#F8F8F8' },
+  },
+  searchResultItemText: {
+    marginLeft: '1rem',
   },
 }));
 
@@ -47,12 +60,14 @@ export default function Search({
 }) {
   const classes = useStyles();
   const [searchString, setSearchString] = useState('');
+  const [wasSearched, setWasSearched] = useState(false);
 
   useEffect(() => {
     if (searchString !== '') {
       search();
     } else {
       setUserList([]);
+      setWasSearched(false);
     }
   }, [searchString, setUserList]);
 
@@ -70,6 +85,7 @@ export default function Search({
         config
       );
       setUserList(data);
+      setWasSearched(true);
     } catch (error) {
       console.log(error);
     }
@@ -108,22 +124,30 @@ export default function Search({
       startConversation(userId);
     }
     setSearchString('');
+    setWasSearched(false);
   };
 
   const startConvo = (userId) => {
     convoExists(userId);
   };
 
-  const showSearchResults = () =>
+  const searchResults = () =>
     userList.map((u) => (
       <div
         className={classes.searchResultItem}
         key={u._id}
         onClick={() => startConvo(u._id)}
       >
-        {u.username}
+        <Avatar>{u.username.substring(0, 2)}</Avatar>
+        <div className={classes.searchResultItemText}>{u.username}</div>
       </div>
     ));
+
+  const noResults = (
+    <div className={classes.searchResultItem}>
+      There were no users found in your search please try again
+    </div>
+  );
 
   return (
     <>
@@ -139,9 +163,9 @@ export default function Search({
         value={searchString}
         onChange={(e) => handleSearch(e.target.value)}
       />
-      {userList.length > 0 ? (
+      {wasSearched ? (
         <div className={classes.searchResultsContainer}>
-          {showSearchResults()}
+          {userList.length > 0 ? searchResults() : noResults}
         </div>
       ) : null}
     </>

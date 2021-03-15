@@ -86,7 +86,7 @@ const Sidebar = ({
 
   return (
     <div style={{ padding: '0px 1rem' }}>
-      <div>
+      <div style={{ position: 'relative' }}>
         <div className={classes.sidebarHeader}>
           <div style={{ fontSize: '20px' }}>
             {currentUser && loggedInUser()}
