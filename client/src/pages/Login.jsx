@@ -1,54 +1,20 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Hidden from '@material-ui/core/Hidden';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Link, useHistory } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { Formik } from 'formik';
+import { useHistory } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
 import { UserContext } from '../UserContext';
+import LandingLayout from '../layout/LandingLayout';
+import LandingSnackbar from '../components/LandingSnackbar';
+import LandingLinks from '../components/LandingLinks';
+import LandingWelcome from '../components/LandingWelcome';
+import { useLogin } from '../actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: '100vh',
-    '& .MuiInput-underline:before': {
-      borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
-    },
-  },
-  welcome: {
-    fontSize: 26,
-    paddingBottom: 20,
-    color: '#000000',
-    fontWeight: 500,
-  },
-  heroText: {
-    fontSize: 26,
-    textAlign: 'center',
-    color: 'white',
-    marginTop: 30,
-    maxWidth: 300,
-  },
-  overlay: {
-    backgroundImage:
-      'linear-gradient(180deg, rgb(58,141,255, 0.75) 0%, rgb(134,185,255, 0.75) 100%)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    paddingBottom: 145,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   buttonHeader: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -57,40 +23,6 @@ const useStyles = makeStyles((theme) => ({
     bgcolor: 'background.paper',
     minHeight: '100vh',
     paddingTop: 23,
-  },
-  accBtn: {
-    width: 170,
-    height: 54,
-    borderRadius: 5,
-    filter: 'drop-shadow(0px 2px 6px rgba(74,106,149,0.2))',
-    backgroundColor: '#ffffff',
-    color: '#3a8dff',
-    boxShadow: 'none',
-    marginRight: 35,
-  },
-  noAccBtn: {
-    fontSize: 14,
-    color: '#b0b0b0',
-    fontWeight: 400,
-    textAlign: 'center',
-    marginRight: 21,
-    whiteSpace: 'nowrap',
-  },
-  image: {
-    backgroundImage: 'url(./images/bg-img.png)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  box: {
-    padding: 24,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    flexDirection: 'column',
-    maxWidth: 900,
-    margin: 'auto',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -113,46 +45,21 @@ const useStyles = makeStyles((theme) => ({
     height: '2rem',
     padding: '5px',
   },
-  link: { textDecoration: 'none', display: 'flex', flexWrap: 'nowrap' },
   forgot: {
     paddingRight: 10,
     color: '#3a8dff',
   },
 }));
 
-function useLogin() {
-  const login = async (email, password) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      const { data } = await axios.post(
-        '/auth/login',
-        JSON.stringify({ email, password }),
-        config
-      );
-
-      return data;
-    } catch (err) {
-      throw new Error(err.response.data.error);
-    }
-  };
-  return login;
-}
-
 export default function Login() {
   const classes = useStyles();
+  const history = useHistory();
+  const login = useLogin();
 
   const { user, setUser } = useContext(UserContext);
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
-
-  const login = useLogin();
-  const history = useHistory();
 
   useEffect(() => {
     if (user) history.push('/home');
@@ -164,169 +71,112 @@ export default function Login() {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={false} md={5} className={classes.image}>
-        <Box className={classes.overlay}>
-          <Hidden smDown>
-            <img width={67} src="/images/chatBubble.png" alt="chat bubble" />
-            <Hidden smDown>
-              <p className={classes.heroText}>
-                Converse with anyone with any language
-              </p>
-            </Hidden>
-          </Hidden>
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={12} md={7} elevation={6} component={Paper} square>
-        <Box className={classes.buttonHeader}>
-          <Box p={1} alignSelf="flex-end" alignItems="center">
-            <Link to="/signup" className={classes.link}>
-              <Button className={classes.noAccBtn}>
-                Don't have an account?
-              </Button>
-              <Button
-                color="default"
-                className={classes.accBtn}
-                variant="contained"
-              >
-                Create account
-              </Button>
-            </Link>
-          </Box>
-
-          <Box width="100%" maxWidth={450} p={3} alignSelf="center">
-            <Grid container>
-              <Grid item xs>
-                <p className={classes.welcome} component="h1" variant="h5">
-                  Welcome back!
-                </p>
-              </Grid>
-            </Grid>
-            <Formik
-              initialValues={{
-                email: '',
-                password: '',
-              }}
-              validationSchema={Yup.object().shape({
-                email: Yup.string()
-                  .required('Email is required')
-                  .email('Email is not valid'),
-                password: Yup.string()
-                  .required('Password is required')
-                  .max(100, 'Password is too long')
-                  .min(6, 'Password too short'),
-              })}
-              onSubmit={({ email, password }, { setSubmitting }) => {
-                setSubmitting(true);
-                login(email, password).then(
-                  (data) => {
-                    setSubmitting(false);
-                    setUser(data.user);
-                    history.push('/home');
-                  },
-                  (err) => {
-                    setSubmitting(false);
-                    setError(err.message);
-                    setOpen(true);
-                  }
-                );
-              }}
-            >
-              {({ handleSubmit, handleChange, values, touched, errors }) => (
-                <form
-                  onSubmit={handleSubmit}
-                  className={classes.form}
-                  noValidate
-                >
-                  <TextField
-                    id="email"
-                    label={<p className={classes.label}>E-mail address</p>}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    InputProps={{ classes: { input: classes.inputs } }}
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    helperText={touched.email ? errors.email : ''}
-                    error={touched.email && Boolean(errors.email)}
-                    value={values.email}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    id="password"
-                    label={
-                      <Typography className={classes.label}>
-                        Password
-                      </Typography>
-                    }
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    InputProps={{
-                      classes: { input: classes.inputs },
-                      endAdornment: (
-                        <Typography className={classes.forgot}>
-                          Forgot?
-                        </Typography>
-                      ),
-                    }}
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    helperText={touched.password ? errors.password : ''}
-                    error={touched.password && Boolean(errors.password)}
-                    value={values.password}
-                    onChange={handleChange}
-                  />
-
-                  <Box textAlign="center">
-                    <Button
-                      type="submit"
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                    >
-                      Login
-                    </Button>
-                  </Box>
-
-                  <div style={{ height: 95 }} />
-                </form>
-              )}
-            </Formik>
-          </Box>
-          <Box p={1} alignSelf="center" />
-        </Box>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message={error ? error : null}
-          action={
-            <React.Fragment>
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleClose}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </React.Fragment>
-          }
+    <LandingLayout>
+      <Box className={classes.buttonHeader}>
+        <LandingLinks
+          noAcctBtnText="Dont have an account?"
+          acctBtnText="Create account"
+          route="/signup"
         />
-      </Grid>
-    </Grid>
+        <Box width="100%" maxWidth={450} p={3} alignSelf="center">
+          <LandingWelcome welcomeText="Welcome back!" />
+          <Formik
+            initialValues={{
+              email: '',
+              password: '',
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .required('Email is required')
+                .email('Email is not valid'),
+              password: Yup.string()
+                .required('Password is required')
+                .max(100, 'Password is too long')
+                .min(6, 'Password too short'),
+            })}
+            onSubmit={({ email, password }, { setSubmitting }) => {
+              setSubmitting(true);
+              login(email, password).then(
+                (data) => {
+                  setSubmitting(false);
+                  setUser(data.user);
+                  history.push('/home');
+                },
+                (err) => {
+                  setSubmitting(false);
+                  setError(err.message);
+                  setOpen(true);
+                }
+              );
+            }}
+          >
+            {({ handleChange, values, isSubmitting, touched, errors }) => (
+              <Form className={classes.form} noValidate>
+                <TextField
+                  id="email"
+                  label={<p className={classes.label}>E-mail address</p>}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{ classes: { input: classes.inputs } }}
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  helperText={touched.email ? errors.email : ''}
+                  error={touched.email && Boolean(errors.email)}
+                  value={values.email}
+                  onChange={handleChange}
+                />
+                <TextField
+                  id="password"
+                  label={
+                    <Typography className={classes.label}>Password</Typography>
+                  }
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    classes: { input: classes.inputs },
+                    endAdornment: (
+                      <Typography className={classes.forgot}>
+                        Forgot?
+                      </Typography>
+                    ),
+                  }}
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  helperText={touched.password ? errors.password : ''}
+                  error={touched.password && Boolean(errors.password)}
+                  value={values.password}
+                  onChange={handleChange}
+                />
+
+                <Box textAlign="center">
+                  <Button
+                    disabled={isSubmitting}
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Login
+                  </Button>
+                </Box>
+
+                <div style={{ height: 95 }} />
+              </Form>
+            )}
+          </Formik>
+        </Box>
+        <Box p={1} alignSelf="center" />
+      </Box>
+      <LandingSnackbar open={open} handleClose={handleClose} error={error} />
+    </LandingLayout>
   );
 }
