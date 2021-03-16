@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
 import { theme } from './themes/theme.js';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
@@ -9,6 +14,7 @@ import { UserContext } from './UserContext';
 import axios from 'axios';
 import './App.css';
 import PrivateRoute from './routing/PrivateRoute';
+import NotFound from './layout/NotFound';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,20 +35,23 @@ function App() {
 
   return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
+      <Router>
         <UserContext.Provider value={{ user, setUser }}>
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <PrivateRoute
-            path="/home"
-            component={Home}
-            userLoading={userLoading}
-          />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <PrivateRoute
+              path="/home"
+              component={Home}
+              userLoading={userLoading}
+            />
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
         </UserContext.Provider>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </BrowserRouter>
+      </Router>
     </MuiThemeProvider>
   );
 }
