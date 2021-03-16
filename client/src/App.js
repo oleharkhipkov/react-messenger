@@ -8,15 +8,21 @@ import Home from './pages/Home';
 import { UserContext } from './UserContext';
 import axios from 'axios';
 import './App.css';
+import PrivateRoute from './routing/PrivateRoute';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
     async function loadUser() {
-      const { data } = await axios.get('/auth/user');
-
-      setUser(data.user);
+      try {
+        const { data } = await axios.get('/auth/user');
+        setUser(data.user);
+      } catch (error) {
+        console.log(error);
+      }
+      setUserLoading(false);
     }
     loadUser();
   }, []);
@@ -27,10 +33,14 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route path="/home" component={Home} />
+          <PrivateRoute
+            path="/home"
+            component={Home}
+            userLoading={userLoading}
+          />
         </UserContext.Provider>
         <Route exact path="/">
-          <Redirect to="/signup" />
+          <Redirect to="/home" />
         </Route>
       </BrowserRouter>
     </MuiThemeProvider>
