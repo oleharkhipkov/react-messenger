@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -60,10 +60,14 @@ export default function Search({
   const classes = useStyles();
   const [searchString, setSearchString] = useState('');
   const [wasSearched, setWasSearched] = useState(false);
+  const timeOut = useRef(null);
 
   useEffect(() => {
+    clearTimeout(timeOut.current);
     if (searchString !== '') {
-      search();
+      timeOut.current = setTimeout(() => {
+        search();
+      }, 250);
     } else {
       setUserList([]);
       setWasSearched(false);
@@ -92,7 +96,7 @@ export default function Search({
   };
 
   const handleSearch = (e) => {
-    setSearchString(e);
+    setSearchString(e.target.value);
   };
 
   const startConversation = async (userId) => {
@@ -159,7 +163,7 @@ export default function Search({
           startAdornment: <SearchIcon className={classes.searchIcon} />,
         }}
         value={searchString}
-        onChange={(e) => handleSearch(e.target.value)}
+        onChange={(e) => handleSearch(e)}
       />
       {wasSearched ? (
         <div className={classes.searchResultsContainer}>
