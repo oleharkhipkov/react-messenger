@@ -60,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     paddingTop: 23,
   },
+  acctLinks: {
+    [theme.breakpoints.down('xs')]: {
+      alignSelf: 'center',
+    },
+  },
   accBtn: {
     width: 170,
     height: 54,
@@ -69,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#3a8dff',
     boxShadow: 'none',
     marginRight: 35,
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 8,
+      width: 0,
+    },
   },
   noAccBtn: {
     fontSize: 14,
@@ -77,6 +86,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     marginRight: 21,
     whiteSpace: 'nowrap',
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 8,
+    },
   },
   image: {
     backgroundImage: 'url(./images/bg-img.png)',
@@ -115,7 +127,11 @@ const useStyles = makeStyles((theme) => ({
     height: '2rem',
     padding: '5px',
   },
-  link: { textDecoration: 'none', display: 'flex', flexWrap: 'nowrap' },
+  link: {
+    textDecoration: 'none',
+    display: 'flex',
+    flexWrap: 'nowrap',
+  },
 }));
 
 function useRegister() {
@@ -163,9 +179,9 @@ export default function Register() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={5} className={classes.image}>
+      <Grid item xs={false} sm={false} md={5} className={classes.image}>
         <Box className={classes.overlay}>
-          <Hidden xsDown>
+          <Hidden smDown>
             <img width={67} src="/images/chatBubble.png" alt="chat bubble" />
             <Hidden smDown>
               <Typography className={classes.heroText}>
@@ -175,9 +191,14 @@ export default function Register() {
           </Hidden>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
+      <Grid item xs={12} sm={12} md={7} elevation={6} component={Paper} square>
         <Box className={classes.buttonHeader}>
-          <Box p={1} alignSelf="flex-end" alignItems="center">
+          <Box
+            p={1}
+            className={classes.acctLinks}
+            alignSelf="flex-end"
+            alignItems="center"
+          >
             <Link to="/login" className={classes.link}>
               <Button className={classes.noAccBtn}>
                 Already have an account?

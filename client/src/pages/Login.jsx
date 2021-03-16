@@ -166,9 +166,9 @@ export default function Login() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={5} className={classes.image}>
+      <Grid item xs={false} sm={false} md={5} className={classes.image}>
         <Box className={classes.overlay}>
-          <Hidden xsDown>
+          <Hidden smDown>
             <img width={67} src="/images/chatBubble.png" alt="chat bubble" />
             <Hidden smDown>
               <p className={classes.heroText}>
@@ -178,7 +178,7 @@ export default function Login() {
           </Hidden>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
+      <Grid item xs={12} sm={12} md={7} elevation={6} component={Paper} square>
         <Box className={classes.buttonHeader}>
           <Box p={1} alignSelf="flex-end" alignItems="center">
             <Link to="/signup" className={classes.link}>
