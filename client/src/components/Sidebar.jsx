@@ -5,42 +5,8 @@ import Search from './Search';
 import ConvoUserList from './ConvoUserList';
 import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import Please from 'pleasejs';
-
-const useStyles = makeStyles((theme) => ({
-  sidebarContainer: {
-    padding: '0px 1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '95vh',
-    [theme.breakpoints.down('xs')]: {
-      padding: '0px',
-    },
-  },
-  sidebarHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    minHeight: '70px',
-    padding: '0px 20px 0px 10px',
-    alignItems: 'center',
-  },
-  userImg: {
-    width: '44px',
-    height: '44px',
-    borderRadius: '50%',
-    marginRight: '10px',
-    backgroundColor: Please.make_color(),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headingText: {
-    fontSize: '20px',
-    letterSpacing: '-0.29px',
-  },
-}));
+import { useStyles } from '../styles/Sidebar';
 
 const Sidebar = ({
   userList,

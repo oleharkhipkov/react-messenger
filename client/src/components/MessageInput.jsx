@@ -2,34 +2,8 @@ import React, { useState } from 'react';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: '0 3rem',
-    marginBottom: '3.5rem',
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: '2rem',
-      padding: '0rem',
-    },
-  },
-  recordIcon: { marginRight: '12px' },
-  messageInput: {
-    height: '70px',
-    borderRadius: '8px',
-    backgroundColor: '#f4f6fa',
-    display: 'flex',
-    paddingLeft: '20px',
-    alignItems: 'center',
-    width: '100%',
-  },
-  messageIcons: {
-    display: 'flex',
-    color: '#d1d9e6',
-    marginRight: '10px',
-  },
-}));
+import { useStyles } from '../styles/MessageInput';
 
 const MessageInput = ({ conversation, setConversation }) => {
   const classes = useStyles();

@@ -1,18 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  noMessages: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  noMessagesHeading: {
-    fontSize: '22px',
-  },
-}));
+import { useStyles } from '../styles/NoMessages';
 
 const NoMessages = () => {
   const classes = useStyles();

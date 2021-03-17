@@ -2,17 +2,8 @@ import React, { useRef } from 'react';
 import MessageInput from './MessageInput';
 import ChatHeader from './ChatHeader';
 import Conversation from './Conversation';
-import { makeStyles } from '@material-ui/core/styles';
 import NoMessages from './NoMessages';
-
-const useStyles = makeStyles(() => ({
-  activeChat: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '95vh',
-    position: 'relative',
-  },
-}));
+import { useStyles } from '../styles/Chat';
 
 const Chat = ({ conversation, setConversation, user }) => {
   const classes = useStyles();
