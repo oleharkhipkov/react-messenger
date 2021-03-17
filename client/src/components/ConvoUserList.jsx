@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import { useStyles, StyledBadge } from '../styles/ConvoUserList';
 
 const ConvoUserList = ({ conversations, user, getConversation }) => {
@@ -28,20 +29,20 @@ const ConvoUserList = ({ conversations, user, getConversation }) => {
           </Avatar>
         </StyledBadge>
         <Box className={classes.convoInfo}>
-          <p className={classes.username}>
+          <Typography className={classes.username}>
             {convo.users.find((u) => u.username !== user.username).username}
-          </p>
+          </Typography>
 
           {convo.mostRecentMessage && (
-            <p className={classes.mostRecentMessage}>
+            <Typography className={classes.mostRecentMessage}>
               {convo.mostRecentMessage.body}
-            </p>
+            </Typography>
           )}
         </Box>
       </Box>
     ));
 
-  return <div className={classes.convoUserList}>{conversationList()}</div>;
+  return <Box className={classes.convoUserList}>{conversationList()}</Box>;
 };
 
 export default ConvoUserList;

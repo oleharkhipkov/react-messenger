@@ -28,8 +28,13 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  username: {
+    fontSize: '20px',
+  },
   headingText: {
     fontSize: '20px',
     letterSpacing: '-0.29px',
+    marginBlockEnd: '13px',
+    marginBlockStart: '13px',
   },
 }));

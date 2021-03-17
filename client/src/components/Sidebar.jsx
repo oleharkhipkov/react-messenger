@@ -5,6 +5,8 @@ import Search from './Search';
 import ConvoUserList from './ConvoUserList';
 import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { useStyles } from '../styles/Sidebar';
 
@@ -23,11 +25,11 @@ const Sidebar = ({
 
   const loggedInUser = () => (
     <Box display="flex" alignItems="center">
-      <div className={classes.userImg}>
-        <p>{user.username.substring(0, 2).toUpperCase()}</p>
-      </div>
+      <Avatar className={classes.userImg}>
+        {user.username.substring(0, 2).toUpperCase()}
+      </Avatar>
       <Box>
-        <p>{user.username}</p>
+        <Typography className={classes.username}>{user.username}</Typography>
       </Box>
     </Box>
   );
@@ -56,8 +58,8 @@ const Sidebar = ({
   };
 
   return (
-    <div className={classes.sidebarContainer}>
-      <div style={{ position: 'relative' }}>
+    <Box className={classes.sidebarContainer}>
+      <Box style={{ position: 'relative' }}>
         <SidebarHeader
           currentUser={user}
           loggedInUser={loggedInUser}
@@ -66,7 +68,9 @@ const Sidebar = ({
           handleClose={handleClose}
           logout={logout}
         />
-        <h1 className={classes.headingText}>Chats</h1>
+        <Typography variant="h1" className={classes.headingText}>
+          Chats
+        </Typography>
         <Search
           userList={userList}
           setUserList={setUserList}
@@ -75,7 +79,7 @@ const Sidebar = ({
           getConversation={getConversation}
           user={user}
         />
-      </div>
+      </Box>
       <ConvoUserList
         conversations={conversations}
         conversation={conversation}
@@ -84,7 +88,7 @@ const Sidebar = ({
         setConvoLoading={setConvoLoading}
         getConversation={getConversation}
       />
-    </div>
+    </Box>
   );
 };
 

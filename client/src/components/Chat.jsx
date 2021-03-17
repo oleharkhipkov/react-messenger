@@ -3,6 +3,7 @@ import MessageInput from './MessageInput';
 import ChatHeader from './ChatHeader';
 import Conversation from './Conversation';
 import NoMessages from './NoMessages';
+import Box from '@material-ui/core/Box';
 import { useStyles } from '../styles/Chat';
 
 const Chat = ({ conversation, setConversation, user }) => {
@@ -17,7 +18,7 @@ const Chat = ({ conversation, setConversation, user }) => {
   }
 
   return (
-    <div className={classes.activeChat}>
+    <Box className={classes.activeChat}>
       <ChatHeader conversation={conversation} user={user} />
       <Conversation
         conversation={conversation}
@@ -29,7 +30,7 @@ const Chat = ({ conversation, setConversation, user }) => {
         conversation={conversation}
         setConversation={setConversation}
       />
-    </div>
+    </Box>
   );
 };
 

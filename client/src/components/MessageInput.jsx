@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import { useStyles } from '../styles/MessageInput';
 
@@ -50,10 +51,10 @@ const MessageInput = ({ conversation, setConversation }) => {
           className: classes.messageInput,
           disableunderline: 'true',
           endAdornment: (
-            <div className={classes.messageIcons}>
+            <Box className={classes.messageIcons}>
               <FiberManualRecordIcon className={classes.recordIcon} />
               <FileCopyIcon />
-            </div>
+            </Box>
           ),
         }}
       />

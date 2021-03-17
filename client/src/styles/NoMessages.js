@@ -7,8 +7,12 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
+    marginBlockStart: '1em',
+    marginBlockEnd: '1em',
   },
   noMessagesHeading: {
     fontSize: '22px',
+    marginBlockStart: '1em',
+    marginBlockEnd: '1em',
   },
 }));

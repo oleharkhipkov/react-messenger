@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles/Conversation';
 
 const Conversation = ({
@@ -30,22 +32,26 @@ const Conversation = ({
       const isSenderLoggedInUser = () => msg.sender._id === user.id;
 
       return (
-        <div
+        <Box
           key={msg._id}
-          className={isSenderLoggedInUser() && classes.end}
+          className={isSenderLoggedInUser() ? classes.end : undefined}
           style={{ maxWidth: '70%', display: 'flex' }}
         >
           {msg.sender._id !== user.id && (
-            <div className={classes.userAvatar}>
+            <Box className={classes.userAvatar}>
               {msg.sender.username.substring(0, 2)}
-            </div>
+            </Box>
           )}
-          <div className={isSenderLoggedInUser() && classes.msgContentRight}>
-            <p className={classes.timeStamp}>
+          <Box
+            className={
+              isSenderLoggedInUser() ? classes.msgContentRight : undefined
+            }
+          >
+            <Typography className={classes.timeStamp}>
               {!isSenderLoggedInUser() && msg.sender.username}{' '}
               {convertDateToClockTime(msg.createdAt)}
-            </p>
-            <p
+            </Typography>
+            <Typography
               className={
                 isSenderLoggedInUser()
                   ? classes.messageBubbleRight
@@ -53,18 +59,18 @@ const Conversation = ({
               }
             >
               {msg.body}
-            </p>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+        </Box>
       );
     });
   };
 
   return (
-    <div className={classes.chat}>
+    <Box className={classes.chat}>
       {conversation.messages ? currentConversation() : null}
-      <div ref={messagesEndRef} />
-    </div>
+      <Box ref={messagesEndRef} />
+    </Box>
   );
 };
 

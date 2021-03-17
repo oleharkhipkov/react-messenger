@@ -3,6 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Box from '@material-ui/core/Box';
 import { useStyles } from '../styles/SidebarHeader';
 
 const SidebarHeader = ({
@@ -16,8 +17,8 @@ const SidebarHeader = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.sidebarHeader}>
-      <div style={{ fontSize: '20px' }}>{currentUser && loggedInUser()}</div>
+    <Box className={classes.sidebarHeader}>
+      <Box style={{ fontSize: '20px' }}>{currentUser && loggedInUser()}</Box>
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -36,7 +37,7 @@ const SidebarHeader = ({
         {' '}
         <MenuItem onClick={() => logout()}>Logout</MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 };
 
