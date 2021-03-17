@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
+import SearchResults from './SearchResults';
+import NoUsersFound from './NoUsersFound';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import { useStyles } from '../styles/Search';
@@ -89,24 +90,6 @@ export default function Search({
     setWasSearched(false);
   };
 
-  const searchResults = () =>
-    userList.map((u) => (
-      <Box
-        className={classes.searchResultItem}
-        key={u._id}
-        onClick={() => attemptConvoStart(u._id)}
-      >
-        <Avatar>{u.username.substring(0, 2)}</Avatar>
-        <Box className={classes.searchResultItemText}>{u.username}</Box>
-      </Box>
-    ));
-
-  const noResults = (
-    <Box className={classes.searchResultItem}>
-      There were no users found in your search please try again
-    </Box>
-  );
-
   return (
     <>
       <TextField
@@ -123,7 +106,14 @@ export default function Search({
       />
       {wasSearched ? (
         <Box className={classes.searchResultsContainer}>
-          {userList.length > 0 ? searchResults() : noResults}
+          {userList.length > 0 ? (
+            <SearchResults
+              userList={userList}
+              attemptConvoStart={attemptConvoStart}
+            />
+          ) : (
+            <NoUsersFound />
+          )}
         </Box>
       ) : null}
     </>

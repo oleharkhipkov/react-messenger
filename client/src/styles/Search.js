@@ -27,20 +27,4 @@ export const useStyles = makeStyles((theme) => ({
     zIndex: '2',
     width: '100%',
   },
-  searchResultItem: {
-    display: 'flex',
-    alignItems: 'center',
-    borderBottom: '1px solid #d6d6d6',
-    borderLeft: '1px solid #d6d6d6',
-    borderRight: '1px solid #d6d6d6',
-    padding: '14px',
-    paddingLeft: '10px',
-    fontWeight: 'bold',
-    background: '#fff',
-    boxShadow: '-1px 0px 6px 0 rgba(0, 0, 0, 0.1)',
-    '&:hover': { backgroundColor: '#F8F8F8' },
-  },
-  searchResultItemText: {
-    marginLeft: '16px',
-  },
 }));
