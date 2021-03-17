@@ -4,7 +4,8 @@ import NoUsersFound from './NoUsersFound';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
-import axios from 'axios';
+import { useSearchUsers } from '../actions/user';
+import { useStartConversation } from '../actions/messages';
 import { useStyles } from '../styles/Search';
 
 export default function Search({
@@ -17,6 +18,10 @@ export default function Search({
   const classes = useStyles();
   const [searchString, setSearchString] = useState('');
   const [wasSearched, setWasSearched] = useState(false);
+
+  const searchUsers = useSearchUsers();
+  const startConversation = useStartConversation();
+
   const timeOut = useRef(null);
 
   useEffect(() => {
@@ -33,40 +38,18 @@ export default function Search({
   }, [searchString]);
 
   const search = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      const { data } = await axios.post(
-        '/users',
-        JSON.stringify({ searchString }),
-        config
-      );
-      setUserList(data);
-      setWasSearched(true);
-    } catch (error) {
-      console.log(error);
-    }
+    const users = await searchUsers(searchString);
+    setUserList(users);
+    setWasSearched(true);
   };
 
-  const handleSearch = (e) => {
+  const handleChange = (e) => {
     setSearchString(e.target.value);
   };
 
-  const startConversation = async (userId) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    const { data } = await axios.post(
-      '/conversations',
-      JSON.stringify({ user: userId }),
-      config
-    );
+  const startConvo = async (userId) => {
+    const data = await startConversation(userId);
+
     getConversation(data._id);
   };
 
@@ -84,7 +67,7 @@ export default function Search({
       }
     }
     if (match === false) {
-      startConversation(userId);
+      startConvo(userId);
     }
     setSearchString('');
     setWasSearched(false);
@@ -102,7 +85,7 @@ export default function Search({
           startAdornment: <SearchIcon className={classes.searchIcon} />,
         }}
         value={searchString}
-        onChange={(e) => handleSearch(e)}
+        onChange={(e) => handleChange(e)}
       />
       {wasSearched ? (
         <Box className={classes.searchResultsContainer}>

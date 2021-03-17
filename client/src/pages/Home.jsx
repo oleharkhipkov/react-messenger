@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../components/Sidebar';
 import Chat from '../components/Chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from 'axios';
+import { useGetConversations } from '../actions/messages';
 import { useStyles } from '../styles/Home';
 
 export default function Home() {
   const classes = useStyles();
   const history = useHistory();
+  const getConversations = useGetConversations();
 
   const { user } = useContext(UserContext);
 
@@ -25,12 +26,13 @@ export default function Home() {
   }, [user, history]);
 
   useEffect(() => {
-    async function getConversations() {
-      const { data } = await axios.get('/conversations');
-      setConversations(data);
+    async function getConvos() {
+      const convos = await getConversations();
+      setConversations(convos);
     }
 
-    getConversations();
+    getConvos();
+    // eslint-disable-next-line
   }, [conversation]);
 
   if (!conversations) {

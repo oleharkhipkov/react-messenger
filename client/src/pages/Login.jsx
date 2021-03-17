@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {

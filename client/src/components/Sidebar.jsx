@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import { useHistory } from 'react-router-dom';
 import Search from './Search';
 import ConvoUserList from './ConvoUserList';
@@ -7,7 +7,8 @@ import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
+import { useLogout } from '../actions/auth';
+import { useGetConversation } from '../actions/messages';
 import { useStyles } from '../styles/Sidebar';
 
 const Sidebar = ({
@@ -23,6 +24,9 @@ const Sidebar = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
 
+  const getConversation = useGetConversation();
+  const logout = useLogout();
+
   const loggedInUser = () => (
     <Box display="flex" alignItems="center">
       <Avatar className={classes.userImg}>
@@ -34,24 +38,21 @@ const Sidebar = ({
     </Box>
   );
 
-  const getConversation = async (id) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+  const getConvo = async (id) => {
     setConvoLoading(true);
-    const { data } = await axios.get(`/conversations/${id}`, config);
+
+    const convo = await getConversation(id);
+
     setConvoLoading(false);
-    setConversation(data);
+    setConversation(convo);
   };
 
   const handleClick = (e) => setAnchorEl(e.target);
 
   const handleClose = () => setAnchorEl(null);
 
-  const logout = async () => {
-    await axios.get('/auth/logout');
+  const logoutUser = async () => {
+    await logout();
 
     history.push('/login');
     setUser(null);
@@ -66,7 +67,7 @@ const Sidebar = ({
           handleClick={handleClick}
           anchorEl={anchorEl}
           handleClose={handleClose}
-          logout={logout}
+          logout={logoutUser}
         />
         <Typography variant="h1" className={classes.headingText}>
           Chats
@@ -76,7 +77,7 @@ const Sidebar = ({
           setUserList={setUserList}
           conversations={conversations}
           setConversation={setConversation}
-          getConversation={getConversation}
+          getConversation={getConvo}
           user={user}
         />
       </Box>
@@ -86,7 +87,7 @@ const Sidebar = ({
         user={user}
         setConversation={setConversation}
         setConvoLoading={setConvoLoading}
-        getConversation={getConversation}
+        getConversation={getConvo}
       />
     </Box>
   );
