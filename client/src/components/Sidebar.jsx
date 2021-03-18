@@ -5,7 +5,6 @@ import Search from './Search';
 import ConvoUserList from './ConvoUserList';
 import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { useLogout } from '../actions/auth';
 import { useGetConversation } from '../actions/messages';
@@ -24,21 +23,10 @@ const Sidebar = ({
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
-  const history = useHistory();
 
+  const history = useHistory();
   const getConversation = useGetConversation();
   const logout = useLogout();
-
-  const loggedInUser = () => (
-    <Box display="flex" alignItems="center">
-      <Avatar className={classes.userImg}>
-        {user.username.substring(0, 2).toUpperCase()}
-      </Avatar>
-      <Box>
-        <Typography className={classes.username}>{user.username}</Typography>
-      </Box>
-    </Box>
-  );
 
   const handleGetConversation = async (id) => {
     setConvoLoading(true);
@@ -73,7 +61,6 @@ const Sidebar = ({
       <Box style={{ position: 'relative' }}>
         <SidebarHeader
           currentUser={user}
-          loggedInUser={loggedInUser}
           handleClick={handleClick}
           anchorEl={anchorEl}
           handleClose={handleClose}

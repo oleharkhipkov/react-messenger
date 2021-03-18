@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Please from 'pleasejs';
 
 export const useStyles = makeStyles((theme) => ({
   sidebarContainer: {
@@ -17,19 +16,6 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: '70px',
     padding: '0px 20px 0px 10px',
     alignItems: 'center',
-  },
-  userImg: {
-    width: '44px',
-    height: '44px',
-    borderRadius: '50%',
-    marginRight: '10px',
-    backgroundColor: Please.make_color(),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  username: {
-    fontSize: '20px',
   },
   headingText: {
     fontSize: '20px',

@@ -1,4 +1,5 @@
 import React from 'react';
+import LoggedInUser from './LoggedInUser';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,7 +9,6 @@ import { useStyles } from '../styles/SidebarHeader';
 
 const SidebarHeader = ({
   currentUser,
-  loggedInUser,
   handleClick,
   anchorEl,
   handleClose,
@@ -18,7 +18,9 @@ const SidebarHeader = ({
 
   return (
     <Box className={classes.sidebarHeader}>
-      <Box style={{ fontSize: '20px' }}>{currentUser && loggedInUser()}</Box>
+      <Box style={{ fontSize: '20px' }}>
+        {currentUser && <LoggedInUser user={currentUser} />}
+      </Box>
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"

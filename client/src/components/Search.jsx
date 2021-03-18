@@ -39,6 +39,10 @@ export default function Search({
     // eslint-disable-next-line
   }, [searchString]);
 
+  const handleChange = (e) => {
+    setSearchString(e.target.value);
+  };
+
   const handleSearch = async () => {
     try {
       const data = await searchUsers(searchString);
@@ -48,10 +52,6 @@ export default function Search({
       setError(err.message);
       setShowError(true);
     }
-  };
-
-  const handleChange = (e) => {
-    setSearchString(e.target.value);
   };
 
   const handleStartConversation = async (userId) => {
