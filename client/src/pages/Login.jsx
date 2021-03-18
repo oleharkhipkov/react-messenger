@@ -9,10 +9,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { UserContext } from '../UserContext';
 import LandingLayout from '../layout/LandingLayout';
-import LandingSnackbar from '../components/LandingSnackbar';
+import SnackbarAlert from '../components/SnackbarAlert';
 import LandingLinks from '../components/LandingLinks';
 import LandingWelcome from '../components/LandingWelcome';
-import { useLogin } from '../actions/authActions';
+import { useLogin } from '../actions/auth';
 
 const useStyles = makeStyles((theme) => ({
   buttonHeader: {
@@ -58,17 +58,12 @@ export default function Login() {
 
   const { user, setUser } = useContext(UserContext);
 
-  const [open, setOpen] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (user) history.push('/home');
   }, [history, user]);
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setOpen(false);
-  };
 
   return (
     <LandingLayout>
@@ -105,7 +100,7 @@ export default function Login() {
                 (err) => {
                   setSubmitting(false);
                   setError(err.message);
-                  setOpen(true);
+                  setShowError(true);
                 }
               );
             }}
@@ -176,7 +171,11 @@ export default function Login() {
         </Box>
         <Box p={1} alignSelf="center" />
       </Box>
-      <LandingSnackbar open={open} handleClose={handleClose} error={error} />
+      <SnackbarAlert
+        error={error}
+        showError={showError}
+        setShowError={setShowError}
+      />
     </LandingLayout>
   );
 }

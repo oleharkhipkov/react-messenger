@@ -10,7 +10,7 @@ export function useLogin() {
 
     try {
       const { data } = await axios.post(
-        '/auth/login',
+        '/auth/loginx',
         JSON.stringify({ email, password }),
         config
       );
