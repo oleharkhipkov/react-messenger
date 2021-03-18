@@ -10,13 +10,6 @@ export const useStyles = makeStyles((theme) => ({
       padding: '0px',
     },
   },
-  sidebarHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    minHeight: '70px',
-    padding: '0px 20px 0px 10px',
-    alignItems: 'center',
-  },
   headingText: {
     fontSize: '20px',
     letterSpacing: '-0.29px',
