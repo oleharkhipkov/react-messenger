@@ -6,50 +6,13 @@ import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import { UserContext } from '../UserContext';
 import LandingLayout from '../layout/LandingLayout';
 import SnackbarAlert from '../components/SnackbarAlert';
 import LandingLinks from '../components/LandingLinks';
 import LandingWelcome from '../components/LandingWelcome';
 import { useLogin } from '../actions/auth';
-
-const useStyles = makeStyles((theme) => ({
-  buttonHeader: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    bgcolor: 'background.paper',
-    minHeight: '100vh',
-    paddingTop: 23,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  label: { fontSize: 19, color: 'rgb(0,0,0,0.4)', paddingLeft: '5px' },
-  submit: {
-    margin: theme.spacing(3, 2, 2),
-    padding: 10,
-    width: 160,
-    height: 56,
-    borderRadius: 3,
-    marginTop: 49,
-    fontSize: 16,
-    fontWeight: 'bold',
-    backgroundColor: '#3a8dff',
-  },
-  inputs: {
-    marginTop: '.8rem',
-    height: '2rem',
-    padding: '5px',
-  },
-  forgot: {
-    paddingRight: 10,
-    color: '#3a8dff',
-  },
-}));
+import { useStyles } from '../styles/Login';
 
 export default function Login() {
   const classes = useStyles();
