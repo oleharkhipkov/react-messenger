@@ -1,16 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(() => ({
-  welcome: {
-    fontSize: 26,
-    paddingBottom: 20,
-    color: '#000000',
-    fontWeight: 500,
-  },
-}));
+import { useStyles } from '../styles/LandingWelcome';
 
 const LandingLinks = ({ welcomeText }) => {
   const classes = useStyles();

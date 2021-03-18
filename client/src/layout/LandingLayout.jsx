@@ -4,41 +4,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: '100vh',
-    '& .MuiInput-underline:before': {
-      borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
-    },
-  },
-  heroText: {
-    fontSize: 26,
-    textAlign: 'center',
-    color: 'white',
-    marginTop: 30,
-    maxWidth: 300,
-  },
-  overlay: {
-    backgroundImage:
-      'linear-gradient(180deg, rgb(58,141,255, 0.85) 0%, rgb(134,185,255, 0.85) 100%)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    paddingBottom: 145,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    backgroundImage: 'url(./images/bg-img.png)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-}));
+import { useStyles } from '../styles/LandingLayout';
 
 const LandingLayout = ({ children }) => {
   const classes = useStyles();
