@@ -17,7 +17,7 @@ export function useSearchUsers() {
 
       return data;
     } catch (err) {
-      throw new Error(err.response.statusText);
+      throw new Error('Failed to Search Users');
     }
   };
 

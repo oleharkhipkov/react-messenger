@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../components/Sidebar';
 import Chat from '../components/Chat';
+import SnackbarAlert from '../components/SnackbarAlert';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetConversations } from '../actions/messages';
 import { useStyles } from '../styles/Home';
@@ -20,18 +21,25 @@ export default function Home() {
   const [userList, setUserList] = useState([]);
   const [conversation, setConversation] = useState({});
   const [convoLoading, setConvoLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!user) history.push('/signup');
   }, [user, history]);
 
   useEffect(() => {
-    async function getConvos() {
-      const convos = await getConversations();
-      setConversations(convos);
+    async function handleGetConversations() {
+      try {
+        const data = await getConversations();
+        setConversations(data);
+      } catch (err) {
+        setError(err.message);
+        setShowError(true);
+      }
     }
 
-    getConvos();
+    handleGetConversations();
     // eslint-disable-next-line
   }, [conversation]);
 
@@ -50,6 +58,8 @@ export default function Home() {
             setConversation={setConversation}
             conversation={conversation}
             setConvoLoading={setConvoLoading}
+            setError={setError}
+            setShowError={setShowError}
           />
         </Grid>
         <Grid item xs={12} sm={8} className={classes.rightGridItem}>
@@ -58,8 +68,15 @@ export default function Home() {
             setConversation={setConversation}
             user={user}
             convoLoading={convoLoading}
+            setError={setError}
+            setShowError={setShowError}
           />
         </Grid>
+        <SnackbarAlert
+          error={error}
+          showError={showError}
+          setShowError={setShowError}
+        />
       </Grid>
     </Container>
   );

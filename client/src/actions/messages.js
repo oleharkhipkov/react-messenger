@@ -17,7 +17,7 @@ export function useSendMessage() {
 
       return data;
     } catch (err) {
-      throw new Error(err.response.statusText);
+      throw new Error('Failed to Send Message');
     }
   };
 
@@ -31,8 +31,7 @@ export function useGetConversation() {
 
       return data;
     } catch (err) {
-      // throw new Error(err.response.statusText);
-      console.log(err);
+      throw new Error('Failed to Get Conversation');
     }
   };
 
@@ -40,15 +39,13 @@ export function useGetConversation() {
 }
 
 export function useGetConversations() {
-  console.log('am i in here');
   const getConversations = async () => {
     try {
       const { data } = await axios.get('/conversations');
 
       return data;
     } catch (err) {
-      // throw new Error(err.response.statusText);
-      console.log(err);
+      throw new Error('Failed to Get Conversations');
     }
   };
 
@@ -65,15 +62,14 @@ export function useStartConversation() {
 
     try {
       const { data } = await axios.post(
-        '/conversations',
+        '/conversation',
         JSON.stringify({ user: userId }),
         config
       );
 
       return data;
     } catch (err) {
-      // throw new Error(err.response.statusText);
-      console.log(err);
+      throw new Error('Failed to Start Conversation');
     }
   };
 

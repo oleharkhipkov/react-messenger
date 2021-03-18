@@ -5,7 +5,7 @@ export function useLogout() {
     try {
       await axios.get('/auth/logout');
     } catch (err) {
-      throw new Error(err.response.statusText);
+      throw new Error('Logout Failed');
     }
   };
   return logout;

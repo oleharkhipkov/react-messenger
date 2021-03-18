@@ -18,6 +18,8 @@ const Sidebar = ({
   setConversation,
   conversation,
   setConvoLoading,
+  setError,
+  setShowError,
 }) => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
@@ -38,24 +40,32 @@ const Sidebar = ({
     </Box>
   );
 
-  const getConvo = async (id) => {
+  const handleGetConversation = async (id) => {
     setConvoLoading(true);
-
-    const convo = await getConversation(id);
-
+    try {
+      const data = await getConversation(id);
+      setConversation(data);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
     setConvoLoading(false);
-    setConversation(convo);
   };
 
   const handleClick = (e) => setAnchorEl(e.target);
 
   const handleClose = () => setAnchorEl(null);
 
-  const logoutUser = async () => {
-    await logout();
+  const handleLogout = async () => {
+    try {
+      await logout();
 
-    history.push('/login');
-    setUser(null);
+      history.push('/login');
+      setUser(null);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
   };
 
   return (
@@ -67,7 +77,7 @@ const Sidebar = ({
           handleClick={handleClick}
           anchorEl={anchorEl}
           handleClose={handleClose}
-          logout={logoutUser}
+          handleLogout={handleLogout}
         />
         <Typography variant="h1" className={classes.headingText}>
           Chats
@@ -77,8 +87,10 @@ const Sidebar = ({
           setUserList={setUserList}
           conversations={conversations}
           setConversation={setConversation}
-          getConversation={getConvo}
+          handleGetConversation={handleGetConversation}
           user={user}
+          setError={setError}
+          setShowError={setShowError}
         />
       </Box>
       <ConvoUserList
@@ -87,7 +99,7 @@ const Sidebar = ({
         user={user}
         setConversation={setConversation}
         setConvoLoading={setConvoLoading}
-        getConversation={getConvo}
+        handleGetConversation={handleGetConversation}
       />
     </Box>
   );

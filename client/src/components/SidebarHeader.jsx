@@ -12,7 +12,7 @@ const SidebarHeader = ({
   handleClick,
   anchorEl,
   handleClose,
-  logout,
+  handleLogout,
 }) => {
   const classes = useStyles();
 
@@ -35,7 +35,7 @@ const SidebarHeader = ({
         onClose={handleClose}
       >
         {' '}
-        <MenuItem onClick={() => logout()}>Logout</MenuItem>
+        <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
       </Menu>
     </Box>
   );

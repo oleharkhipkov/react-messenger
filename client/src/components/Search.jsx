@@ -13,7 +13,9 @@ export default function Search({
   userList,
   conversations,
   user,
-  getConversation,
+  handleGetConversation,
+  setError,
+  setShowError,
 }) {
   const classes = useStyles();
   const [searchString, setSearchString] = useState('');
@@ -28,7 +30,7 @@ export default function Search({
     clearTimeout(timeOut.current);
     if (searchString !== '') {
       timeOut.current = setTimeout(() => {
-        search();
+        handleSearch();
       }, 250);
     } else {
       setUserList([]);
@@ -37,20 +39,30 @@ export default function Search({
     // eslint-disable-next-line
   }, [searchString]);
 
-  const search = async () => {
-    const users = await searchUsers(searchString);
-    setUserList(users);
-    setWasSearched(true);
+  const handleSearch = async () => {
+    try {
+      const data = await searchUsers(searchString);
+      setUserList(data);
+      setWasSearched(true);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
   };
 
   const handleChange = (e) => {
     setSearchString(e.target.value);
   };
 
-  const startConvo = async (userId) => {
-    const data = await startConversation(userId);
+  const handleStartConversation = async (userId) => {
+    try {
+      const data = await startConversation(userId);
 
-    getConversation(data._id);
+      handleGetConversation(data._id);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
   };
 
   const attemptConvoStart = (userId) => {
@@ -62,12 +74,12 @@ export default function Search({
 
       if (convoExists) {
         match = true;
-        getConversation(convo._id);
+        handleGetConversation(convo._id);
         break;
       }
     }
     if (match === false) {
-      startConvo(userId);
+      handleStartConversation(userId);
     }
     setSearchString('');
     setWasSearched(false);

@@ -6,7 +6,12 @@ import Box from '@material-ui/core/Box';
 import { useSendMessage } from '../actions/messages';
 import { useStyles } from '../styles/MessageInput';
 
-const MessageInput = ({ conversation, setConversation }) => {
+const MessageInput = ({
+  conversation,
+  setConversation,
+  setError,
+  setShowError,
+}) => {
   const classes = useStyles();
   const [body, setBody] = useState('');
 
@@ -32,7 +37,8 @@ const MessageInput = ({ conversation, setConversation }) => {
         messages: [...conversation.messages, message],
       });
     } catch (err) {
-      console.log(err);
+      setError(err.message);
+      setShowError(true);
     }
   };
 
@@ -59,29 +65,6 @@ const MessageInput = ({ conversation, setConversation }) => {
           }}
         />
       </form>
-      {/* <Snackbar open={open} error={error} handleClose={handleClose} /> */}
-      {/* <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={error ? error : null}
-        action={
-          <React.Fragment>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
-      /> */}
     </>
   );
 };

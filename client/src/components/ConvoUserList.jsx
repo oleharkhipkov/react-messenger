@@ -4,13 +4,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { useStyles, StyledBadge } from '../styles/ConvoUserList';
 
-const ConvoUserList = ({ conversations, user, getConversation }) => {
+const ConvoUserList = ({ conversations, user, handleGetConversation }) => {
   const classes = useStyles();
 
   const conversationList = () =>
     conversations.map((convo) => (
       <Box
-        onClick={() => getConversation(convo._id)}
+        onClick={() => handleGetConversation(convo._id)}
         key={convo._id}
         className={classes.conversation}
       >
