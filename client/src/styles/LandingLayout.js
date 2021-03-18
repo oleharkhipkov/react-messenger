@@ -8,11 +8,11 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   heroText: {
-    fontSize: 26,
+    fontSize: '26px',
     textAlign: 'center',
     color: 'white',
-    marginTop: 30,
-    maxWidth: 300,
+    marginTop: '30px',
+    maxWidth: '300px',
   },
   overlay: {
     backgroundImage:
@@ -21,7 +21,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
     flexDirection: 'column',
     minHeight: '100vh',
-    paddingBottom: 145,
+    paddingBottom: '145px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
