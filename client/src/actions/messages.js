@@ -62,7 +62,7 @@ export function useStartConversation() {
 
     try {
       const { data } = await axios.post(
-        '/conversation',
+        '/conversations',
         JSON.stringify({ user: userId }),
         config
       );
