@@ -1,9 +1,5 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Hidden from '@material-ui/core/Hidden';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Box, Hidden, Grid, Paper, CssBaseline } from '@material-ui/core';
 import { useStyles } from '../styles/LandingLayout';
 
 const LandingLayout = ({ children }) => {

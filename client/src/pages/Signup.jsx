@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
+import { Button, TextField, Box, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import Typography from '@material-ui/core/Typography';
 import { UserContext } from '../UserContext';
 import LandingLayout from '../layout/LandingLayout';
 import SnackbarAlert from '../components/SnackbarAlert';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from '../styles/LandingWelcome';
 
 const LandingLinks = ({ welcomeText }) => {
@@ -8,9 +8,9 @@ const LandingLinks = ({ welcomeText }) => {
   return (
     <Grid container>
       <Grid item xs>
-        <p className={classes.welcome} component="h1" variant="h5">
+        <Typography className={classes.welcome} component="h1" variant="h5">
           {welcomeText}
-        </p>
+        </Typography>
       </Grid>
     </Grid>
   );

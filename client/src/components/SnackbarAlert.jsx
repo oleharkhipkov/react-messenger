@@ -1,7 +1,6 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import { IconButton, Snackbar } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Snackbar from '@material-ui/core/Snackbar';
 
 const SnackbarAlert = ({ error, showError, setShowError }) => {
   const handleClose = (e, reason) => {

@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Box, CircularProgress } from '@material-ui/core';
 import { UserContext } from '../UserContext';
+import { useStyles } from '../styles/PrivateRoute';
 
 const PrivateRoute = ({ component: Component, userLoading, ...rest }) => {
+  const classes = useStyles();
   const { user } = useContext(UserContext);
 
   return (
@@ -11,16 +13,9 @@ const PrivateRoute = ({ component: Component, userLoading, ...rest }) => {
       {...rest}
       render={(props) =>
         userLoading ? (
-          <div
-            style={{
-              display: 'flex',
-              height: '100vh',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Box className={classes.privateRoute}>
             <CircularProgress />
-          </div>
+          </Box>
         ) : user ? (
           <Component {...props} />
         ) : (
