@@ -1,17 +1,22 @@
 import React from 'react';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { useStyles } from '../styles/NotFound';
 
 const NotFound = () => {
+  const classes = useStyles();
+
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h1>
+    <Box className={classes.notFound}>
+      <Typography className={classes.notFoundHeading}>
         Sorry, that page cannot be found – it's a big 404. But Hatchways is
         still pretty cool, right?
-      </h1>
-      <p>
+      </Typography>
+      <Typography className={classes.notFoundText}>
         Click <Link to="/">here</Link> to return to the home page.{' '}
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 };
 

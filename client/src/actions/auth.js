@@ -24,7 +24,7 @@ export function useLogin() {
 }
 
 export function useRegister() {
-  const login = async (username, email, password) => {
+  const register = async (username, email, password) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -42,5 +42,5 @@ export function useRegister() {
       throw new Error(err.response.data.error);
     }
   };
-  return login;
+  return register;
 }
