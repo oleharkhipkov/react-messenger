@@ -10,7 +10,7 @@ import {
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
-import { UserContext } from './UserContext';
+import { UserContext } from './context/UserContext';
 import axios from 'axios';
 import './App.css';
 import PrivateRoute from './routing/PrivateRoute';

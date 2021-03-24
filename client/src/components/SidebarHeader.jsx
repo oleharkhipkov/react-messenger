@@ -1,33 +1,26 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import LoggedInUser from './LoggedInUser';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-
-const useStyles = makeStyles((theme) => ({
-  sidebarHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    minHeight: '70px',
-    padding: '0px 20px 0px 10px',
-    alignItems: 'center',
-  },
-}));
+import Box from '@material-ui/core/Box';
+import { useStyles } from '../styles/SidebarHeader';
 
 const SidebarHeader = ({
   currentUser,
-  loggedInUser,
   handleClick,
   anchorEl,
   handleClose,
-  logout,
+  handleLogout,
 }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.sidebarHeader}>
-      <div style={{ fontSize: '20px' }}>{currentUser && loggedInUser()}</div>
+    <Box className={classes.sidebarHeader}>
+      <Box style={{ fontSize: '20px' }}>
+        {currentUser && <LoggedInUser user={currentUser} />}
+      </Box>
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -44,9 +37,9 @@ const SidebarHeader = ({
         onClose={handleClose}
       >
         {' '}
-        <MenuItem onClick={() => logout()}>Logout</MenuItem>
+        <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 };
 

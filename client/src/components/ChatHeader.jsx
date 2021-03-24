@@ -1,46 +1,8 @@
 import React from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-
-const useStyles = makeStyles((theme) => ({
-  chatHeader: {
-    backgroundColor: '#fff',
-    minHeight: '70px',
-    boxShadow: '0 2px 20px 0 rgba(88,133,196,0.10)',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: '1.5rem',
-    paddingRight: '3.5rem',
-  },
-  userInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userUsername: {
-    fontFamily: 'Open Sans',
-    fontSize: '20px',
-    color: '#000000',
-    letterSpacing: '-0.29px',
-  },
-  userStatus: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: '12px',
-    marginTop: '4px',
-  },
-  status: {
-    height: '8px',
-    width: '8px',
-    borderRadius: '50%',
-    backgroundColor: '#1CED84',
-    display: 'flex',
-    marginRight: '4px',
-  },
-}));
+import Box from '@material-ui/core/Box';
+import { useStyles } from '../styles/ChatHeader';
 
 const ChatHeader = ({ conversation, user }) => {
   const classes = useStyles();
@@ -49,14 +11,14 @@ const ChatHeader = ({ conversation, user }) => {
     conversation.users.find((u) => u.username !== user.username).username;
 
   return (
-    <div className={classes.chatHeader}>
-      <div className={classes.userInfo}>
-        <div className={classes.userUsername}>{activeChatUser()}</div>
-        <div className={classes.userStatus}>
-          <div className={classes.status}></div>
-          <div style={{ color: '#BFC9DB' }}>Online</div>
-        </div>
-      </div>
+    <Box className={classes.chatHeader}>
+      <Box className={classes.userInfo}>
+        <Box className={classes.userUsername}>{activeChatUser()}</Box>
+        <Box className={classes.userStatus}>
+          <Box className={classes.status}></Box>
+          <Box style={{ color: '#BFC9DB' }}>Online</Box>
+        </Box>
+      </Box>
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -64,7 +26,7 @@ const ChatHeader = ({ conversation, user }) => {
       >
         <MoreHorizIcon style={{ color: '#95a7c4' }} />
       </IconButton>
-    </div>
+    </Box>
   );
 };
 

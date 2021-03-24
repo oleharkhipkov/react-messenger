@@ -1,72 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import SearchResults from './SearchResults';
+import NoUsersFound from './NoUsersFound';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
-import Avatar from '@material-ui/core/Avatar';
-import axios from 'axios';
-
-const useStyles = makeStyles((theme) => ({
-  search: {
-    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#ffffff',
-    },
-    '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-      border: '1px solid white',
-    },
-  },
-  searchInput: {
-    minHeight: '50px',
-    borderRadius: '8px',
-    backgroundColor: '#e9eef9',
-    display: 'flex',
-    paddingLeft: '20px',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  searchIcon: {
-    color: '#b1c3df',
-    marginRight: '6px',
-  },
-  searchResultsContainer: {
-    position: 'absolute',
-    zIndex: '2',
-    width: '100%',
-  },
-  searchResultItem: {
-    display: 'flex',
-    alignItems: 'center',
-    borderBottom: '1px solid #d6d6d6',
-    borderLeft: '1px solid #d6d6d6',
-    borderRight: '1px solid #d6d6d6',
-    padding: '14px',
-    paddingLeft: '10px',
-    fontWeight: 'bold',
-    background: '#fff',
-    boxShadow: '-1px 0px 6px 0 rgba(0, 0, 0, 0.1)',
-    '&:hover': { backgroundColor: '#F8F8F8' },
-  },
-  searchResultItemText: {
-    marginLeft: '1rem',
-  },
-}));
+import Box from '@material-ui/core/Box';
+import { useSearchUsers } from '../actions/user';
+import { useStartConversation } from '../actions/messages';
+import { useStyles } from '../styles/Search';
 
 export default function Search({
   setUserList,
   userList,
   conversations,
   user,
-  getConversation,
+  handleGetConversation,
+  setError,
+  setShowError,
 }) {
   const classes = useStyles();
   const [searchString, setSearchString] = useState('');
   const [wasSearched, setWasSearched] = useState(false);
+
+  const searchUsers = useSearchUsers();
+  const startConversation = useStartConversation();
+
   const timeOut = useRef(null);
 
   useEffect(() => {
     clearTimeout(timeOut.current);
     if (searchString !== '') {
       timeOut.current = setTimeout(() => {
-        search();
+        handleSearch();
       }, 250);
     } else {
       setUserList([]);
@@ -75,42 +39,30 @@ export default function Search({
     // eslint-disable-next-line
   }, [searchString]);
 
-  const search = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      const { data } = await axios.post(
-        '/users',
-        JSON.stringify({ searchString }),
-        config
-      );
-      setUserList(data);
-      setWasSearched(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleSearch = (e) => {
+  const handleChange = (e) => {
     setSearchString(e.target.value);
   };
 
-  const startConversation = async (userId) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    const { data } = await axios.post(
-      '/conversations',
-      JSON.stringify({ user: userId }),
-      config
-    );
-    getConversation(data._id);
+  const handleSearch = async () => {
+    try {
+      const data = await searchUsers(searchString);
+      setUserList(data);
+      setWasSearched(true);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
+  };
+
+  const handleStartConversation = async (userId) => {
+    try {
+      const data = await startConversation(userId);
+
+      handleGetConversation(data._id);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
   };
 
   const attemptConvoStart = (userId) => {
@@ -122,34 +74,16 @@ export default function Search({
 
       if (convoExists) {
         match = true;
-        getConversation(convo._id);
+        handleGetConversation(convo._id);
         break;
       }
     }
     if (match === false) {
-      startConversation(userId);
+      handleStartConversation(userId);
     }
     setSearchString('');
     setWasSearched(false);
   };
-
-  const searchResults = () =>
-    userList.map((u) => (
-      <div
-        className={classes.searchResultItem}
-        key={u._id}
-        onClick={() => attemptConvoStart(u._id)}
-      >
-        <Avatar>{u.username.substring(0, 2)}</Avatar>
-        <div className={classes.searchResultItemText}>{u.username}</div>
-      </div>
-    ));
-
-  const noResults = (
-    <div className={classes.searchResultItem}>
-      There were no users found in your search please try again
-    </div>
-  );
 
   return (
     <>
@@ -163,12 +97,19 @@ export default function Search({
           startAdornment: <SearchIcon className={classes.searchIcon} />,
         }}
         value={searchString}
-        onChange={(e) => handleSearch(e)}
+        onChange={(e) => handleChange(e)}
       />
       {wasSearched ? (
-        <div className={classes.searchResultsContainer}>
-          {userList.length > 0 ? searchResults() : noResults}
-        </div>
+        <Box className={classes.searchResultsContainer}>
+          {userList.length > 0 ? (
+            <SearchResults
+              userList={userList}
+              attemptConvoStart={attemptConvoStart}
+            />
+          ) : (
+            <NoUsersFound />
+          )}
+        </Box>
       ) : null}
     </>
   );
