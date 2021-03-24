@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -152,7 +152,7 @@ export default function Register() {
   const history = useHistory();
 
   useEffect(() => {
-    if (user) history.push('/dashboard');
+    if (user) history.push('/home');
   }, [history, user]);
 
   const handleClose = (event, reason) => {
@@ -228,7 +228,7 @@ export default function Register() {
                   (data) => {
                     setSubmitting(false);
                     setUser(data.user);
-                    history.push('/dashboard');
+                    history.push('/home');
                   },
                   (err) => {
                     setSubmitting(false);
