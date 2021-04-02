@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Box, CircularProgress } from '@material-ui/core';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import { useStyles } from '../styles/PrivateRoute';
 
 const PrivateRoute = ({ component: Component, userLoading, ...rest }) => {

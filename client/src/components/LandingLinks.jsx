@@ -13,12 +13,20 @@ const LandingLinks = ({ noAcctBtnText, acctBtnText, route }) => {
       alignSelf="flex-end"
       alignItems="center"
     >
-      <Link to={route} className={classes.link}>
-        <Button className={classes.noAccBtn}>{noAcctBtnText}</Button>
-        <Button color="default" className={classes.accBtn} variant="contained">
+      <Box className={classes.link}>
+        <Button className={classes.noAccBtn} component={Link} to={route}>
+          {noAcctBtnText}
+        </Button>
+        <Button
+          color="default"
+          className={classes.accBtn}
+          component={Link}
+          to={route}
+          variant="contained"
+        >
           {acctBtnText}
         </Button>
-      </Link>
+      </Box>
     </Box>
   );
 };

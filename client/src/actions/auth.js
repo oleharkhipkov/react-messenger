@@ -44,3 +44,18 @@ export function useRegister() {
   };
   return register;
 }
+
+export function useLoadUser() {
+  const loadUser = async () => {
+    try {
+      const { data } = await axios.get('/auth/user');
+
+      return data;
+    } catch (err) {
+      if (err.response.status !== 401) {
+        throw new Error('Server Error');
+      }
+    }
+  };
+  return loadUser;
+}

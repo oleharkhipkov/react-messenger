@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import { useHistory } from 'react-router-dom';
 import Search from './Search';
 import ConvoUserList from './ConvoUserList';

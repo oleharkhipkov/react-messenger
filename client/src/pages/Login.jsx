@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, TextField, Box, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import LandingLayout from '../layout/LandingLayout';
 import SnackbarAlert from '../components/SnackbarAlert';
 import LandingLinks from '../components/LandingLinks';
@@ -11,15 +11,12 @@ import LandingWelcome from '../components/LandingWelcome';
 import { useLogin } from '../actions/auth';
 import { useStyles } from '../styles/Login';
 
-export default function Login() {
+export default function Login({ error, setError, showError, setShowError }) {
   const classes = useStyles();
   const history = useHistory();
   const login = useLogin();
 
   const { user, setUser } = useContext(UserContext);
-
-  const [showError, setShowError] = useState(false);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     if (user) history.push('/home');
