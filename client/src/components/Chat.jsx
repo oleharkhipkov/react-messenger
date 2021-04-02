@@ -2,19 +2,17 @@ import React, { useRef } from 'react';
 import MessageInput from './MessageInput';
 import ChatHeader from './ChatHeader';
 import Conversation from './Conversation';
-import { makeStyles } from '@material-ui/core/styles';
 import NoMessages from './NoMessages';
+import Box from '@material-ui/core/Box';
+import { useStyles } from '../styles/Chat';
 
-const useStyles = makeStyles(() => ({
-  activeChat: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '95vh',
-    position: 'relative',
-  },
-}));
-
-const Chat = ({ conversation, setConversation, user }) => {
+const Chat = ({
+  conversation,
+  setConversation,
+  user,
+  setError,
+  setShowError,
+}) => {
   const classes = useStyles();
   const messagesEndRef = useRef(null);
 
@@ -26,7 +24,7 @@ const Chat = ({ conversation, setConversation, user }) => {
   }
 
   return (
-    <div className={classes.activeChat}>
+    <Box className={classes.activeChat}>
       <ChatHeader conversation={conversation} user={user} />
       <Conversation
         conversation={conversation}
@@ -37,8 +35,10 @@ const Chat = ({ conversation, setConversation, user }) => {
       <MessageInput
         conversation={conversation}
         setConversation={setConversation}
+        setError={setError}
+        setShowError={setShowError}
       />
-    </div>
+    </Box>
   );
 };
 

@@ -5,42 +5,10 @@ import Search from './Search';
 import ConvoUserList from './ConvoUserList';
 import SidebarHeader from './SidebarHeader';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import Please from 'pleasejs';
-
-const useStyles = makeStyles((theme) => ({
-  sidebarContainer: {
-    padding: '0px 1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '95vh',
-    [theme.breakpoints.down('xs')]: {
-      padding: '0px',
-    },
-  },
-  sidebarHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    minHeight: '70px',
-    padding: '0px 20px 0px 10px',
-    alignItems: 'center',
-  },
-  userImg: {
-    width: '44px',
-    height: '44px',
-    borderRadius: '50%',
-    marginRight: '10px',
-    backgroundColor: Please.make_color(),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headingText: {
-    fontSize: '20px',
-    letterSpacing: '-0.29px',
-  },
-}));
+import Typography from '@material-ui/core/Typography';
+import { useLogout } from '../actions/auth';
+import { useGetConversation } from '../actions/messages';
+import { useStyles } from '../styles/Sidebar';
 
 const Sidebar = ({
   userList,
@@ -49,76 +17,78 @@ const Sidebar = ({
   setConversation,
   conversation,
   setConvoLoading,
+  setError,
+  setShowError,
 }) => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
+
   const history = useHistory();
+  const getConversation = useGetConversation();
+  const logout = useLogout();
 
-  const loggedInUser = () => (
-    <Box display="flex" alignItems="center">
-      <div className={classes.userImg}>
-        <p>{user.username.substring(0, 2).toUpperCase()}</p>
-      </div>
-      <Box>
-        <p>{user.username}</p>
-      </Box>
-    </Box>
-  );
-
-  const getConversation = async (id) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+  const handleGetConversation = async (id) => {
     setConvoLoading(true);
-    const { data } = await axios.get(`/conversations/${id}`, config);
+    try {
+      const data = await getConversation(id);
+      setConversation(data);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
     setConvoLoading(false);
-    setConversation(data);
   };
 
   const handleClick = (e) => setAnchorEl(e.target);
 
   const handleClose = () => setAnchorEl(null);
 
-  const logout = async () => {
-    await axios.get('/auth/logout');
+  const handleLogout = async () => {
+    try {
+      await logout();
 
-    history.push('/login');
-    setUser(null);
+      history.push('/login');
+      setUser(null);
+    } catch (err) {
+      setError(err.message);
+      setShowError(true);
+    }
   };
 
   return (
-    <div className={classes.sidebarContainer}>
-      <div style={{ position: 'relative' }}>
+    <Box className={classes.sidebarContainer}>
+      <Box style={{ position: 'relative' }}>
         <SidebarHeader
           currentUser={user}
-          loggedInUser={loggedInUser}
           handleClick={handleClick}
           anchorEl={anchorEl}
           handleClose={handleClose}
-          logout={logout}
+          handleLogout={handleLogout}
         />
-        <h1 className={classes.headingText}>Chats</h1>
+        <Typography variant="h1" className={classes.headingText}>
+          Chats
+        </Typography>
         <Search
           userList={userList}
           setUserList={setUserList}
           conversations={conversations}
           setConversation={setConversation}
-          getConversation={getConversation}
+          handleGetConversation={handleGetConversation}
           user={user}
+          setError={setError}
+          setShowError={setShowError}
         />
-      </div>
+      </Box>
       <ConvoUserList
         conversations={conversations}
         conversation={conversation}
         user={user}
         setConversation={setConversation}
         setConvoLoading={setConvoLoading}
-        getConversation={getConversation}
+        handleGetConversation={handleGetConversation}
       />
-    </div>
+    </Box>
   );
 };
 
