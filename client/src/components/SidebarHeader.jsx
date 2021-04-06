@@ -13,13 +13,16 @@ const SidebarHeader = ({
   anchorEl,
   handleClose,
   handleLogout,
+  onlineUsers,
 }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.sidebarHeader}>
       <Box style={{ fontSize: '20px' }}>
-        {currentUser && <LoggedInUser user={currentUser} />}
+        {currentUser && (
+          <LoggedInUser user={currentUser} onlineUsers={onlineUsers} />
+        )}
       </Box>
       <IconButton
         aria-controls="customized-menu"

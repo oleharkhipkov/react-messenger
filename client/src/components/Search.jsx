@@ -9,10 +9,10 @@ import { useStartConversation } from '../actions/messages';
 import { useStyles } from '../styles/Search';
 
 export default function Search({
-  setUserList,
-  userList,
-  conversations,
   user,
+  userSearchList,
+  setUserSearchList,
+  conversations,
   handleGetConversation,
   setError,
   setShowError,
@@ -33,7 +33,7 @@ export default function Search({
         handleSearch();
       }, 250);
     } else {
-      setUserList([]);
+      setUserSearchList([]);
       setWasSearched(false);
     }
     // eslint-disable-next-line
@@ -46,7 +46,7 @@ export default function Search({
   const handleSearch = async () => {
     try {
       const data = await searchUsers(searchString);
-      setUserList(data);
+      setUserSearchList(data);
       setWasSearched(true);
     } catch (err) {
       setError(err.message);
@@ -101,9 +101,9 @@ export default function Search({
       />
       {wasSearched ? (
         <Box className={classes.searchResultsContainer}>
-          {userList.length > 0 ? (
+          {userSearchList.length > 0 ? (
             <SearchResults
-              userList={userList}
+              userSearchList={userSearchList}
               attemptConvoStart={attemptConvoStart}
             />
           ) : (

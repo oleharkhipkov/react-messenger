@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler');
 // @access Private
 exports.getConversations = asyncHandler(async (req, res, next) => {
   const conversations = await Conversation.find({ users: req.user.id })
-    .populate('users mostRecentMessage')
+    .populate('users mostRecentMessage messages')
     .sort({ updatedAt: -1 });
 
   if (!conversations) {
@@ -37,7 +37,6 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
 // @desc Create new conversation
 // @access Private
 exports.createConversation = asyncHandler(async (req, res, next) => {
-  console.log('create convo', req.body);
   if (!req.body.user) {
     res.status(400);
     throw new Error('User needed to create conversation');

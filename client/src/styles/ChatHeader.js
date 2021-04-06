@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme) => ({
     height: '8px',
     width: '8px',
     borderRadius: '50%',
-    backgroundColor: '#1CED84',
+    // backgroundColor: '#1CED84',
     display: 'flex',
     marginRight: '4px',
   },

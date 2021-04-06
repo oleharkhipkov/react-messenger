@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import io from 'socket.io-client';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../components/Sidebar';
@@ -10,6 +11,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetConversations } from '../actions/messages';
 import { useStyles } from '../styles/Home';
 
+const endpoint = 'http://localhost:3001';
+const socket = io(endpoint);
+
 export default function Home() {
   const classes = useStyles();
   const history = useHistory();
@@ -17,16 +21,27 @@ export default function Home() {
 
   const { user } = useContext(UserContext);
 
-  const [conversations, setConversations] = useState([]);
-  const [userList, setUserList] = useState([]);
   const [conversation, setConversation] = useState({});
+  const [conversations, setConversations] = useState([]);
   const [convoLoading, setConvoLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [userSearchList, setUserSearchList] = useState([]);
+  const [newMessage, setNewMessage] = useState({});
   const [error, setError] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [onlineUsers, setOnlineUsers] = useState({});
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     if (!user) history.push('/signup');
   }, [user, history]);
+
+  useEffect(() => {
+    if (user) socket.emit('user-online', user);
+  }, [user]);
+
+  useEffect(() => {
+    socket.on('users-online', (data) => setOnlineUsers(data));
+  }, []);
 
   useEffect(() => {
     async function handleGetConversations() {
@@ -38,12 +53,11 @@ export default function Home() {
         setShowError(true);
       }
     }
-
     handleGetConversations();
     // eslint-disable-next-line
-  }, [conversation]);
+  }, [conversation, newMessage]);
 
-  if (!conversations) {
+  if (!conversations || !user) {
     return <CircularProgress />;
   }
 
@@ -52,14 +66,18 @@ export default function Home() {
       <Grid container direction="row">
         <Grid item xs={12} sm={4}>
           <Sidebar
-            userList={userList}
-            setUserList={setUserList}
+            userSearchList={userSearchList}
+            setUserSearchList={setUserSearchList}
             conversations={conversations}
             setConversation={setConversation}
             conversation={conversation}
             setConvoLoading={setConvoLoading}
             setError={setError}
             setShowError={setShowError}
+            onlineUsers={onlineUsers}
+            socket={socket}
+            isTyping={isTyping}
+            user={user}
           />
         </Grid>
         <Grid item xs={12} sm={8} className={classes.rightGridItem}>
@@ -70,6 +88,12 @@ export default function Home() {
             convoLoading={convoLoading}
             setError={setError}
             setShowError={setShowError}
+            socket={socket}
+            isTyping={isTyping}
+            setIsTyping={setIsTyping}
+            conversations={conversations}
+            setNewMessage={setNewMessage}
+            onlineUsers={onlineUsers}
           />
         </Grid>
         <SnackbarAlert
