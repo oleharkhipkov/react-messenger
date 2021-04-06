@@ -1,15 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
-  noMessages: {
+  privateRoute: {
     display: 'flex',
-    flexDirection: 'column',
+    height: '100vh',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
-  },
-  noMessagesHeading: {
-    fontSize: '22px',
   },
 }));
-
