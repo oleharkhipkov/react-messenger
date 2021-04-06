@@ -67,6 +67,7 @@ const Sidebar = ({
     try {
       await logout();
       history.push('/login');
+      socket.disconnect();
 
       setUser(null);
     } catch (err) {

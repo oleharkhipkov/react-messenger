@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     socket.on('users-online', (data) => setOnlineUsers(data));
-  }, []);
+  });
 
   useEffect(() => {
     async function handleGetConversations() {
