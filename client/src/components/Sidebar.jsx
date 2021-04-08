@@ -93,6 +93,7 @@ const Sidebar = ({
         <Search
           user={user}
           handleGetConversation={handleGetConversation}
+          conversations={conversations}
           setConversation={setConversation}
           userSearchList={userSearchList}
           setUserSearchList={setUserSearchList}
