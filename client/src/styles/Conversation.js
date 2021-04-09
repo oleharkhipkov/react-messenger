@@ -11,4 +11,16 @@ export const useStyles = makeStyles((theme) => ({
       padding: '16px 16px',
     },
   },
+  messageBubbleLeft: theme.messageBubbleLeft,
+  userAvatar: {
+    minWidth: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'lightGray',
+    marginRight: '12px',
+    textTransform: 'uppercase',
+  },
 }));

@@ -1,48 +1,49 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import { useStyles, StyledBadge } from '../styles/ConvoUserList';
+import React, { useEffect } from 'react';
+import { Box } from '@material-ui/core';
+import ConvoUserListItem from './ConvoUserListItem';
+import { useStyles } from '../styles/ConvoUserList';
 
-const ConvoUserList = ({ conversations, user, handleGetConversation }) => {
+const ConvoUserList = ({
+  user,
+  onlineUsers,
+  conversation,
+  conversations,
+  handleGetConversation,
+  isTyping,
+  readMessages,
+  socket,
+}) => {
   const classes = useStyles();
 
-  const conversationList = () =>
-    conversations.map((convo) => (
-      <Box
-        onClick={() => handleGetConversation(convo._id)}
-        key={convo._id}
-        className={classes.conversation}
-      >
-        <StyledBadge
-          variant="dot"
-          overlap="circle"
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-        >
-          <Avatar className={classes.userImg} color="primary">
-            {convo.users
-              .find((u) => u.username !== user.username)
-              .username.substring(0, 2)}
-          </Avatar>
-        </StyledBadge>
-        <Box className={classes.convoInfo}>
-          <Typography className={classes.username}>
-            {convo.users.find((u) => u.username !== user.username).username}
-          </Typography>
+  useEffect(() => {
+    if (conversation) {
+      readMessages();
+    }
+    // eslint-disable-next-line
+  }, [conversation]);
 
-          {convo.mostRecentMessage && (
-            <Typography className={classes.mostRecentMessage}>
-              {convo.mostRecentMessage.body}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-    ));
+  const unreadMessagesCount = (convo) =>
+    convo.messages.filter(
+      (msg) => msg.sender !== user.id && !msg.readBy.includes(user.id)
+    ).length;
 
-  return <Box className={classes.convoUserList}>{conversationList()}</Box>;
+  return (
+    <Box className={classes.convoUserList}>
+      {conversations.map((convo) => (
+        <ConvoUserListItem
+          key={convo._id}
+          socket={socket}
+          handleGetConversation={handleGetConversation}
+          convo={convo}
+          conversation={conversation}
+          onlineUsers={onlineUsers}
+          user={user}
+          isTyping={isTyping}
+          unreadMessagesCount={unreadMessagesCount}
+        />
+      ))}
+    </Box>
+  );
 };
 
 export default ConvoUserList;

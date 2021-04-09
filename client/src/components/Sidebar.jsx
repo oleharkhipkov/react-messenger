@@ -9,16 +9,20 @@ import Typography from '@material-ui/core/Typography';
 import { useLogout } from '../actions/auth';
 import { useGetConversation } from '../actions/messages';
 import { useStyles } from '../styles/Sidebar';
+import axios from 'axios';
 
 const Sidebar = ({
-  userList,
-  setUserList,
+  userSearchList,
+  setUserSearchList,
   conversations,
   setConversation,
   conversation,
   setConvoLoading,
   setError,
   setShowError,
+  onlineUsers,
+  socket,
+  isTyping,
 }) => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
@@ -33,11 +37,26 @@ const Sidebar = ({
     try {
       const data = await getConversation(id);
       setConversation(data);
+      readMessages(data);
     } catch (err) {
       setError(err.message);
       setShowError(true);
     }
     setConvoLoading(false);
+  };
+
+  const readMessages = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    await axios.put(
+      '/messages/read',
+      JSON.stringify({ conversationId: conversation._id }),
+      config
+    );
   };
 
   const handleClick = (e) => setAnchorEl(e.target);
@@ -47,8 +66,9 @@ const Sidebar = ({
   const handleLogout = async () => {
     try {
       await logout();
-
       history.push('/login');
+      socket.disconnect();
+
       setUser(null);
     } catch (err) {
       setError(err.message);
@@ -65,28 +85,33 @@ const Sidebar = ({
           anchorEl={anchorEl}
           handleClose={handleClose}
           handleLogout={handleLogout}
+          onlineUsers={onlineUsers}
         />
         <Typography variant="h1" className={classes.headingText}>
           Chats
         </Typography>
         <Search
-          userList={userList}
-          setUserList={setUserList}
+          user={user}
+          handleGetConversation={handleGetConversation}
           conversations={conversations}
           setConversation={setConversation}
-          handleGetConversation={handleGetConversation}
-          user={user}
+          userSearchList={userSearchList}
+          setUserSearchList={setUserSearchList}
           setError={setError}
           setShowError={setShowError}
         />
       </Box>
       <ConvoUserList
-        conversations={conversations}
-        conversation={conversation}
         user={user}
+        conversation={conversation}
+        handleGetConversation={handleGetConversation}
         setConversation={setConversation}
         setConvoLoading={setConvoLoading}
-        handleGetConversation={handleGetConversation}
+        conversations={conversations}
+        onlineUsers={onlineUsers}
+        isTyping={isTyping}
+        readMessages={readMessages}
+        socket={socket}
       />
     </Box>
   );

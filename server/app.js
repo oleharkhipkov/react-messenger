@@ -1,5 +1,7 @@
 const colors = require('colors');
+const http = require('http');
 const express = require('express');
+const socketio = require('socket.io');
 const { notFound, errorHandler } = require('./middleware/error');
 const connectDB = require('./db');
 const { join } = require('path');
@@ -14,12 +16,43 @@ const { json, urlencoded } = express;
 
 connectDB();
 const app = express();
+const server = http.createServer(app);
+
+const io = socketio(server, {
+  cors: {
+    origin: '*',
+  },
+});
+
+const onlineUsers = {};
+
+io.on('connection', (socket) => {
+  socket.on('user-online', (user) => {
+    onlineUsers[socket.id] = user.id;
+    io.emit('users-online', onlineUsers);
+  });
+
+  socket.on('join room', (room) => socket.join(room));
+  socket.on('leave room', (room) => socket.leave(room));
+  socket.on('typing', (room) => socket.to(room).emit('typing'));
+  socket.on('not typing', (room) => socket.to(room).emit('not typing'));
+
+  socket.on('disconnect', () => {
+    delete onlineUsers[socket.id];
+    io.emit('users-online', onlineUsers);
+  });
+});
 
 app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 app.use('/auth', authRouter);
 app.use('/conversations', conversationRouter);
@@ -29,4 +62,4 @@ app.use('/users', userRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = app;
+module.exports = { app, server };
