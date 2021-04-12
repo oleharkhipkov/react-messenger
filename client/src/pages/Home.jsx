@@ -15,7 +15,13 @@ const endpoint =
   process.env.NODE_ENV === 'production'
     ? window.location.hostname
     : 'http://localhost:3001';
-const socket = io(endpoint);
+
+const socket = io(endpoint, {
+  transports: ['websocket', 'polling', 'flashsocket'],
+  reconnection: true,
+  reconnectionDelay: 3000,
+  reconnectionAttempts: 20,
+});
 
 export default function Home() {
   const classes = useStyles();
