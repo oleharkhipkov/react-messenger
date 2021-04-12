@@ -44,7 +44,9 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(logger('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(logger('dev'));
+}
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -60,9 +62,8 @@ app.use('/conversations', conversationRouter);
 app.use('/messages', messageRouter);
 app.use('/users', userRouter);
 
-const __dirname = path.resolve();
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/client/build')));
+  app.use(express.static('client/build'));
 
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname), 'client', 'build', 'index.html')
@@ -75,5 +76,12 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(notFound);
 app.use(errorHandler);
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Error: ${err.message}`.red);
+  // Close server & exit process
+  server.close(() => process.exit(1));
+});
 
 module.exports = { app, server };
