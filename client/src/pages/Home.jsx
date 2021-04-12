@@ -11,7 +11,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetConversations } from '../actions/messages';
 import { useStyles } from '../styles/Home';
 
-const endpoint = 'http://localhost:3001';
+const endpoint =
+  process.env.NODE_ENV === 'production'
+    ? window.location.hostname
+    : 'http://localhost:3001';
 const socket = io(endpoint);
 
 export default function Home() {
