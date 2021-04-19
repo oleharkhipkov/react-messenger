@@ -2,6 +2,7 @@ const colors = require('colors');
 const path = require('path');
 const http = require('http');
 const express = require('express');
+const dotenv = require('dotenv');
 const socketio = require('socket.io');
 const { notFound, errorHandler } = require('./middleware/error');
 const connectDB = require('./db');
@@ -15,6 +16,7 @@ const userRouter = require('./routes/user');
 
 const { json, urlencoded } = express;
 
+dotenv.config();
 connectDB();
 const app = express();
 const server = http.createServer(app);
@@ -77,4 +79,13 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = { app, server };
+const port = process.env.PORT || 3001;
+
+server.listen(port, () => {
+  console.log(
+    `server running in ${process.env.NODE_ENV} mode on port ${port}`.red
+      .underline.bold
+  );
+});
+
+// module.exports = { app, server };
