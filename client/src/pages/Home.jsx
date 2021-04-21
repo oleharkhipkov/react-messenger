@@ -11,17 +11,19 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetConversations } from '../actions/messages';
 import { useStyles } from '../styles/Home';
 
-const endpoint =
-  process.env.NODE_ENV === 'production'
-    ? window.location.hostname
-    : 'http://localhost:3001';
+// const endpoint =
+//   process.env.NODE_ENV === 'production'
+//     ? window.location.hostname
+//     : 'http://localhost:3001';
 
-const socket = io(endpoint, {
-  transports: ['websocket', 'polling', 'flashsocket'],
-  reconnection: true,
-  reconnectionDelay: 3000,
-  reconnectionAttempts: 20,
-});
+// const socket = io(endpoint, {
+//   transports: ['websocket', 'polling', 'flashsocket'],
+//   reconnection: true,
+//   reconnectionDelay: 3000,
+//   reconnectionAttempts: 20,
+// });
+
+const socket = io();
 
 export default function Home() {
   const classes = useStyles();
