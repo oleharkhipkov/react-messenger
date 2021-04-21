@@ -29,6 +29,8 @@ const io = socketio(server, {
 
 const onlineUsers = {};
 
+io.set('transports', ['websocket']);
+
 io.on('connection', (socket) => {
   socket.on('user-online', (user) => {
     onlineUsers[socket.id] = user.id;
