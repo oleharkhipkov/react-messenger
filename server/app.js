@@ -1,4 +1,5 @@
 const colors = require('colors');
+const sslRedirect = require('heroku-ssl-redirect');
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -20,6 +21,9 @@ dotenv.config();
 connectDB();
 const app = express();
 const server = http.createServer(app);
+
+// enable ssl redirect
+app.use(sslRedirect());
 
 const io = socketio(server, {
   cors: {
